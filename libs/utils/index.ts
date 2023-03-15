@@ -1,10 +1,7 @@
-import BigNumber from 'bignumber.js'
 import { ClassValue, clsx } from 'clsx'
 import ms from 'ms'
 import { customAlphabet } from 'nanoid'
-import { ParsedUrlQuery } from 'querystring'
 import { twMerge } from 'tailwind-merge'
-import { products } from './data/products'
 
 export const nanoid = customAlphabet(
   '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz',
@@ -69,20 +66,6 @@ export function capitalize(str: string) {
 export const truncate = (str: string, length: number) => {
   if (!str || str.length <= length) return str
   return `${str.slice(0, length)}...`
-}
-
-export function calculatePrice(query: ParsedUrlQuery): BigNumber {
-  let amount = new BigNumber(0)
-  for (const [id, quantity] of Object.entries(query)) {
-    const product = products.find((p) => p.id === id)
-    if (!product) continue
-
-    const price = product.priceSol
-    const productQuantity = new BigNumber(quantity as string)
-    amount = amount.plus(productQuantity.multipliedBy(price))
-  }
-
-  return amount
 }
 
 export function cn(...inputs: ClassValue[]) {
