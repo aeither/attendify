@@ -15,6 +15,10 @@ const db = new Polybase({
 });
 const auth = typeof window !== "undefined" ? new Auth() : null;
 
+/**
+ * Utility
+ */
+
 async function getPublicKey() {
   if (!auth) return;
   const msg = "Login to app";
@@ -27,6 +31,10 @@ export const useCollectionUser = () => {
   const query = db.collection("User");
   return useCollection(query);
 };
+
+/**
+ * Mutations
+ */
 
 export function usePB() {
   const [authed, setAuthed] = useState(false);
@@ -79,7 +87,7 @@ export function usePB() {
   useEffect(() => {
     if (!auth) return;
 
-    auth.onAuthUpdate((authState) => {
+    const unsub = auth.onAuthUpdate((authState) => {
       if (!authState) return;
 
       setAuthed(!!authState);
@@ -91,6 +99,8 @@ export function usePB() {
         };
       });
     });
+
+    return unsub;
   }, []);
 
   return {
