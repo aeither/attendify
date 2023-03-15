@@ -1,21 +1,12 @@
-import { Button, Stack, Typography } from "@mui/material";
-import { toast } from "sonner";
-import { Auth } from "@polybase/auth";
-import {
-  ethPersonalSign,
-  ethPersonalSignRecoverPublicKey,
-} from "@polybase/eth";
-import { Polybase } from "@polybase/client";
-import { useEffect, useState } from "react";
-import { useCollectionUser, usePB } from "@/libs/hooks/use-polybase";
+import { usePB } from "@/libs/hooks/use-polybase";
+import { Button, Typography } from "@mui/material";
+import { useState } from "react";
 
 export default function Home() {
   const [publicKey, setPublicKey] = useState<string | null>(null);
   const [nftId, setNftId] = useState("");
 
-  const { data, error, loading } = useCollectionUser();
-  console.log("🚀 ~ file: index.tsx:17 ~ Home ~ data:", data);
-  const { authed, signIn, signOut, updateName } = usePB();
+  const { authed, signIn, signOut, updateName, address, name } = usePB();
 
   return (
     <>
@@ -27,9 +18,13 @@ export default function Home() {
       </Button>
 
       {authed ? (
-        <Button onClick={signOut} variant="contained">
-          Logout
-        </Button>
+        <>
+          <Typography variant="h3">{name}</Typography>
+          <Typography>{address}</Typography>
+          <Button onClick={signOut} variant="contained">
+            Logout
+          </Button>
+        </>
       ) : (
         <Button onClick={signIn} variant="contained">
           Login

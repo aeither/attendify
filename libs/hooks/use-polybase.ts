@@ -1,13 +1,8 @@
-import { Button, Stack, Typography } from "@mui/material";
-import { toast } from "sonner";
 import { Auth } from "@polybase/auth";
-import {
-  ethPersonalSign,
-  ethPersonalSignRecoverPublicKey,
-} from "@polybase/eth";
 import { Polybase } from "@polybase/client";
-import { useCollection } from "@polybase/react";
+import { ethPersonalSignRecoverPublicKey } from "@polybase/eth";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 const db = new Polybase({
   defaultNamespace:
@@ -27,51 +22,25 @@ async function getPublicKey() {
   return "0x" + publicKey.slice(4);
 }
 
-export const useCollectionUser = () => {
-  const query = db.collection("User");
-  return useCollection(query);
-};
-
 /**
  * Mutations
  */
 
 export function usePB() {
   const [authed, setAuthed] = useState(false);
+  const [name, setName] = useState("");
+  const [address, setAddress] = useState<string | null | undefined>();
 
   const signIn = async () => {
     if (!auth) return;
 
     const res = await auth.signIn();
-    console.log("🚀 ~ file: use-polybase.ts:38 ~ signIn ~ res:", res);
     if (!res) return;
-
-    // get public
-    let publicKey = res.publicKey ? res.publicKey : await getPublicKey();
-    if (!publicKey) return;
-
-    db.signer(async (data: string) => {
-      return {
-        h: "eth-personal-sign",
-        sig: await auth.ethPersonalSign(data),
-      };
-    });
-
-    // Create user if not exists
-    try {
-      const user = await db.collection("User").record(publicKey).get();
-      console.log("User", user);
-    } catch (e) {
-      await db.collection("User").create([publicKey]);
-    }
-
-    setAuthed(!!res);
   };
 
   const signOut = async () => {
     if (!auth) return;
     const res = await auth.signOut();
-    setAuthed(!!res);
     toast("hello");
   };
 
@@ -82,22 +51,40 @@ export function usePB() {
       .collection("User")
       .record(publicKey)
       .call("setName", [name]);
+    return res;
   };
 
   useEffect(() => {
     if (!auth) return;
 
-    const unsub = auth.onAuthUpdate((authState) => {
-      if (!authState) return;
-
+    const unsub = auth.onAuthUpdate(async (authState) => {
       setAuthed(!!authState);
 
+      if (!authState) return;
+
+      // If login
+      setAddress(authState.userId);
       db.signer(async (data) => {
         return {
           h: "eth-personal-sign",
           sig: await auth.ethPersonalSign(data),
         };
       });
+
+      // get public
+      let publicKey = authState.publicKey
+        ? authState.publicKey
+        : await getPublicKey();
+      if (!publicKey) return;
+
+      // Create user if not exists
+      try {
+        const res = await db.collection("User").record(publicKey).get();
+        setName(res.data.name);
+      } catch (e) {
+        const res = await db.collection("User").create([publicKey]);
+        setName(res.data.name);
+      }
     });
 
     return unsub;
@@ -105,6 +92,8 @@ export function usePB() {
 
   return {
     authed,
+    address,
+    name,
     signIn,
     signOut,
     updateName,
