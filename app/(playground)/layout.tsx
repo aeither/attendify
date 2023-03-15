@@ -1,14 +1,7 @@
 import Link from "next/link"
-import { HelpCircle, Zap } from "lucide-react"
 
-import { workspaces } from "@/data/teams"
-import { user } from "@/data/user"
 import { siteConfig } from "@/config/site"
-import { cn } from "@/lib/utils"
 import { Icons } from "@/components/icons"
-import { MainNav } from "@/components/main-nav"
-import { Button, buttonVariants } from "@/components/ui/button"
-import { UserNav } from "@/components/user-nav"
 
 interface DashboardLayoutProps {
   children: React.ReactNode
@@ -24,19 +17,11 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               <Icons.logo />
               <span className="sr-only">{siteConfig.name}</span>
             </Link>
-            <MainNav />
           </div>
           <nav className="ml-auto flex items-center space-x-1">
-            <Link
-              href={siteConfig.links.github}
-              className={cn(buttonVariants({ variant: "ghost" }), "h-9 px-2")}
-            >
+            <Link href={siteConfig.links.github}>
               <Icons.gitHub className="mr-2 h-4 w-4" /> GitHub
             </Link>
-            <Button variant="ghost" className="h-9 pl-2">
-              <HelpCircle className="mr-2 h-4 w-4" /> Help
-            </Button>
-            <UserNav user={user} teams={workspaces} />
           </nav>
         </div>
       </header>
