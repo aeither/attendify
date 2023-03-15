@@ -1,26 +1,35 @@
-import { usePB } from "@/libs/hooks/use-polybase";
-import { Button, Typography } from "@mui/material";
+import { useCopyToClipboard } from "@/libs/hooks/use-copy-to-clipboard";
+import { useAccount } from "@/libs/hooks/use-polybase";
+import { CheckCircleOutline, ContentCopy } from "@mui/icons-material";
+import { Button, IconButton, Typography } from "@mui/material";
 import { useState } from "react";
 
 export default function Home() {
-  const [publicKey, setPublicKey] = useState<string | null>(null);
   const [nftId, setNftId] = useState("");
-
-  const { authed, signIn, signOut, updateName, address, name } = usePB();
+  const { copyToClipboard, hasCopied } = useCopyToClipboard();
+  const { authed, signIn, signOut, updateName, address, name } = useAccount();
 
   return (
     <>
-      <div>hello world</div>
       <Typography variant="h2">Lorem Ipsum</Typography>
 
       <Button onClick={() => updateName("hello")} variant="contained">
         Update record
       </Button>
 
-      {authed ? (
+      {authed && address ? (
         <>
           <Typography variant="h3">{name}</Typography>
-          <Typography>{address}</Typography>
+          <div className="flex items-center gap-2">
+            <Typography>{address}</Typography>
+            <IconButton onClick={() => copyToClipboard(address)}>
+              {hasCopied ? (
+                <CheckCircleOutline fontSize="small" />
+              ) : (
+                <ContentCopy fontSize="small" />
+              )}
+            </IconButton>
+          </div>
           <Button onClick={signOut} variant="contained">
             Logout
           </Button>

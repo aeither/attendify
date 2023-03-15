@@ -23,10 +23,10 @@ async function getPublicKey() {
 }
 
 /**
- * Mutations
+ * useAccount
  */
 
-export function usePB() {
+export function useAccount() {
   const [authed, setAuthed] = useState(false);
   const [name, setName] = useState("");
   const [address, setAddress] = useState<string | null | undefined>();
