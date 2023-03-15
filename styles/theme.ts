@@ -1,21 +1,6 @@
-import createTheme from "@mui/material/styles/createTheme"
+import { createTheme } from "@mui/material/styles";
 
 export const theme = createTheme({
-  typography: {
-    fontFamily: [
-      "Montserrat",
-      "-apple-system",
-      "BlinkMacSystemFont",
-      '"Segoe UI"',
-      "Roboto",
-      '"Helvetica Neue"',
-      "Arial",
-      "sans-serif",
-      '"Apple Color Emoji"',
-      '"Segoe UI Emoji"',
-      '"Segoe UI Symbol"',
-    ].join(","),
-  },
   palette: {
     primary: {
       main: "#000",
@@ -26,4 +11,4 @@ export const theme = createTheme({
       styleOverrides: { root: { borderRadius: "12px" } },
     },
   },
-})
+});
