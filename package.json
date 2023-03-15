@@ -14,7 +14,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@fontsource/roboto": "^4.5.8",
@@ -25,9 +24,11 @@
     "@mui/x-date-pickers": "^6.0.0",
     "@next-auth/prisma-adapter": "^1.0.5",
     "@next/font": "13.1.1",
-
+    "@polybase/auth": "^0.3.34",
+    "@polybase/client": "^0.3.34",
+    "@polybase/eth": "^0.3.34",
+    "@polybase/react": "^0.3.34",
     "@tanstack/react-query": "^4.26.1",
-
     "@types/node": "18.11.18",
     "@types/react": "18.0.26",
     "@types/react-dom": "18.0.10",
