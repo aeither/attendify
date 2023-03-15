@@ -53,6 +53,13 @@ export function useAccount() {
     toast('Logged out')
   }
 
+  const deleteAccount = async () => {
+    const publicKey = await getPublicKey()
+    if (!publicKey) return
+    const res = await polybase.collection('User').record(publicKey).call('del')
+    return res
+  }
+
   const updateName = async (name: string) => {
     const publicKey = await getPublicKey()
     if (!publicKey) return
@@ -104,5 +111,6 @@ export function useAccount() {
     signIn,
     signOut,
     updateName,
+    deleteAccount,
   }
 }

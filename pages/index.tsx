@@ -1,20 +1,25 @@
-import { useCopyToClipboard } from "@/libs/hooks/use-copy-to-clipboard";
-import { useAccount } from "@/libs/hooks/use-polybase";
-import { CheckCircleOutline, ContentCopy } from "@mui/icons-material";
-import { Button, IconButton, Typography } from "@mui/material";
-import { useState } from "react";
+import { useCopyToClipboard } from '@/libs/hooks/use-copy-to-clipboard'
+import { useAccount } from '@/libs/hooks/use-polybase'
+import { CheckCircleOutline, ContentCopy } from '@mui/icons-material'
+import { Button, IconButton, Typography } from '@mui/material'
+import { useState } from 'react'
 
 export default function Home() {
-  const [nftId, setNftId] = useState("");
-  const { copyToClipboard, hasCopied } = useCopyToClipboard();
-  const { authed, signIn, signOut, updateName, address, name } = useAccount();
+  const [nftId, setNftId] = useState('')
+  const { copyToClipboard, hasCopied } = useCopyToClipboard()
+  const { authed, signIn, signOut, updateName, address, name, deleteAccount } =
+    useAccount()
 
   return (
     <>
       <Typography variant="h2">Lorem Ipsum</Typography>
 
-      <Button onClick={() => updateName("hello")} variant="contained">
+      <Button onClick={() => updateName('hello')} variant="contained">
         Update record
+      </Button>
+
+      <Button onClick={() => deleteAccount()} variant="contained">
+        Delete account
       </Button>
 
       {authed && address ? (
@@ -40,5 +45,5 @@ export default function Home() {
         </Button>
       )}
     </>
-  );
+  )
 }
