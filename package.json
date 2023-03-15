@@ -13,6 +13,11 @@
     "format:check": "prettier --check \"**/*.{ts,tsx,mdx}\" --cache"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@fontsource/montserrat": "^4.5.14",
+    "@mui/icons-material": "^5.11.11",
+    "@mui/material": "^5.11.13",
     "@next/font": "^13.2.4",
     "@vercel/analytics": "^0.1.11",
     "clsx": "^1.2.1",

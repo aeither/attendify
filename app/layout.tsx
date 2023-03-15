@@ -1,8 +1,11 @@
 import "@/styles/globals.css"
-import { Toaster } from "sonner"
+import "@fontsource/montserrat"
+import CssBaseline from "@mui/material/CssBaseline/CssBaseline"
+import { StyledEngineProvider } from "@mui/material/styles"
 
 import { Analytics } from "@/components/analytics"
 import { ThemeProvider } from "@/components/theme-provider"
+import { theme } from "@/styles/theme"
 
 interface RootLayoutProps {
   children: React.ReactNode
@@ -19,13 +22,12 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <html lang="en" suppressHydrationWarning>
         <head />
         <body>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="light"
-            disableTransitionOnChange
-          >
-            {children}
-          </ThemeProvider>
+          <StyledEngineProvider injectFirst>
+            <ThemeProvider theme={theme}>
+              <CssBaseline />
+              {children}
+            </ThemeProvider>
+          </StyledEngineProvider>
           <Analytics />
         </body>
       </html>
