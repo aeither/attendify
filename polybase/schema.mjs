@@ -42,8 +42,40 @@ export const POLYBASE_SCHEMA = `
       location: string;
       participants: string[];
     
-      constructor () {
-     
+      constructor (id: string, description: string, date: string, location: string, participant: string) {
+        this.id = id;
+        this.description = description;
+        this.date = date;
+        this.location = location;
+        participants.push(participant);
       }
-    }    
+    }
+    
+    @public
+    collection Ticket {
+      id: string;
+      type: string;
+      price: number;
+      quantity: number;
+    
+      constructor (id: string, type: string, price: number, quantity: number) {
+        this.id = id;
+        this.type = type;
+        this.price = price;
+        this.quantity = quantity;
+      }
+    }
+    
+    @public
+    collection Order {
+      id: string;
+      eventId: string;
+      ticketId: string;
+    
+      constructor (id: string, eventId: string, ticketId: string) {
+        this.id = id;
+        this.eventId = eventId;
+        this.ticketId = ticketId;
+      }
+    }
 `
