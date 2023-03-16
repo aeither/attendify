@@ -9,7 +9,7 @@
       "@/*": ["./*"],
       "@/components/*": ["components/*"],
       "@/pages/*": ["pages/*"],
-      "@/lib/*": ["libs/*"],
+      "@/lib/*": ["lib/*"],
       "@/styles/*": ["styles/*"]
     },
     "strict": true,

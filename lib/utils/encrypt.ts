@@ -8,9 +8,9 @@ import {
 // Public and private key as UInt8Array
 // const { publicKey, privateKey } = await secp256k1.generateKeyPair()
 
-export const Uint8Array = (str: string) => decodeFromString(str, 'utf8')
+export const getUint8Array = (str: string) => decodeFromString(str, 'utf8')
 
-export async function asymmmetricEncryptString(
+export async function asymEncrypt(
   publicKey: Uint8Array,
   str: string,
 ): Promise<EncryptedDataSecp256k1> {
@@ -30,7 +30,7 @@ export async function asymmmetricEncryptString(
   }
 }
 
-export async function asymmetricDecryptString(
+export async function asymDecrypt(
   privateKey: Uint8Array,
   encryptedData: EncryptedDataSecp256k1,
 ): Promise<string> {

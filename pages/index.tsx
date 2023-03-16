@@ -1,5 +1,5 @@
-import { useCopyToClipboard } from '@/libs/hooks/use-copy-to-clipboard'
-import { useAccount } from '@/libs/hooks/use-polybase'
+import { useCopyToClipboard } from '@/lib/hooks/use-copy-to-clipboard'
+import { useEncrypt, useAccount } from '@/lib/hooks/use-polybase'
 import { CheckCircleOutline, ContentCopy } from '@mui/icons-material'
 import { Button, IconButton, Typography } from '@mui/material'
 import { useState } from 'react'

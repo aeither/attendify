@@ -1,16 +1,9 @@
 import { Auth } from '@polybase/auth'
-import {
-  ethPersonalSignRecoverPublicKey,
-  requestAccounts,
-  requireEth,
-  decrypt,
-  encrypt,
-  getEncryptionKey,
-  hashEthereumSignedMessage,
-} from '@polybase/eth'
+import { ethPersonalSignRecoverPublicKey } from '@polybase/eth'
 import { usePolybase, useCollection, useRecord } from '@polybase/react'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
+import { asymEncrypt, asymDecrypt, getUint8Array } from '../utils/encrypt'
 
 const auth = typeof window !== 'undefined' ? new Auth() : null
 
@@ -26,6 +19,22 @@ async function getPublicKey() {
   return '0x' + publicKey.slice(4)
 }
 
+/**
+ * Encrypt data
+ */
+
+export function useEncrypt() {
+  const polybase = usePolybase()
+
+  const encrypt = async () => {
+    if (!auth) return
+    // asymEncrypt()
+  }
+
+  return {
+    encrypt,
+  }
+}
 /**
  * useAccount
  */
