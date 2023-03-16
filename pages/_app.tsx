@@ -5,6 +5,7 @@ import '@fontsource/roboto/300.css'
 import '@fontsource/roboto/400.css'
 import '@fontsource/roboto/500.css'
 import '@fontsource/roboto/700.css'
+import '@safe-global/safe-react-components/dist/fonts.css'
 import CssBaseline from '@mui/material/CssBaseline'
 import { ThemeProvider } from '@mui/material/styles'
 import { Polybase } from '@polybase/client'
@@ -13,6 +14,9 @@ import { Analytics } from '@vercel/analytics/react'
 import type { AppProps } from 'next/app'
 import { Provider as RWBProvider } from 'react-wrap-balancer'
 import { Toaster } from 'sonner'
+import { SafeThemeProvider } from '@safe-global/safe-react-components'
+import type { Theme } from '@mui/material/styles'
+import { useDarkMode } from '@/lib/hooks/use-dark-mode'
 
 const polybase = new Polybase({
   defaultNamespace:
@@ -20,19 +24,26 @@ const polybase = new Polybase({
 })
 
 function MyApp({ Component, pageProps: { ...pageProps } }: AppProps) {
+  const isDarkMode = useDarkMode()
+  const themeMode = isDarkMode ? 'dark' : 'light'
+
   return (
-    <ThemeProvider theme={theme}>
-      <PolybaseProvider polybase={polybase}>
-        <RWBProvider>
-          <ClientOnly>
-            <Toaster position="top-center" richColors />
-            <CssBaseline />
-            <Component {...pageProps} />
-          </ClientOnly>
-        </RWBProvider>
-        <Analytics />
-      </PolybaseProvider>
-    </ThemeProvider>
+    <SafeThemeProvider mode={themeMode}>
+      {(safeTheme: Theme) => (
+        <ThemeProvider theme={safeTheme}>
+          <PolybaseProvider polybase={polybase}>
+            <RWBProvider>
+              <ClientOnly>
+                <Toaster position="top-center" richColors />
+                <CssBaseline />
+                <Component {...pageProps} />
+              </ClientOnly>
+            </RWBProvider>
+            <Analytics />
+          </PolybaseProvider>
+        </ThemeProvider>
+      )}
+    </SafeThemeProvider>
   )
 }
 

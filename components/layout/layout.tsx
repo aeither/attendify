@@ -28,7 +28,7 @@ export default function Layout({ children }: Props) {
 
   return (
     <Box sx={{ pb: 7 }}>
-      <AppBar position="static">
+      <AppBar position="static" className='rounded-none'>
         <Toolbar>
           {/* <IconButton
             size="large"

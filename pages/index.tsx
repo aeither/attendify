@@ -42,7 +42,7 @@ export default function Home() {
         <div className="flex gap-2">
           <Typography variant="h2">Auth</Typography>
 
-          <Button onClick={() => updateName('hello')} variant="contained">
+          <Button onClick={() => updateName('hello')} variant="contained" color='secondary' >
             Update record
           </Button>
 
