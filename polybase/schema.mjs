@@ -1,11 +1,4 @@
-import { Polybase } from '@polybase/client'
-export const applySchema = async () => {
-  const db = new Polybase({
-    defaultNamespace: 'attendify',
-  })
-
-  return await db.applySchema(
-    `
+export const POLYBASE_SCHEMA = `
     @public
     collection User {
       id: string;
@@ -53,7 +46,4 @@ export const applySchema = async () => {
      
       }
     }    
-`,
-    'attendify',
-  ) // your-namespace is optional if you have defined a default namespace
-}
+`
