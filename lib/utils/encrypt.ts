@@ -6,7 +6,7 @@ import {
 } from '@polybase/util'
 
 // Public and private key as UInt8Array
-// const { publicKey, privateKey } = await secp256k1.generateKeyPair()
+export const genKeys = async () => await secp256k1.generateKeyPair()
 
 export const getUint8Array = (str: string) => decodeFromString(str, 'utf8')
 
