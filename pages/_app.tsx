@@ -5,13 +5,14 @@ import '@fontsource/roboto/300.css'
 import '@fontsource/roboto/400.css'
 import '@fontsource/roboto/500.css'
 import '@fontsource/roboto/700.css'
+import CssBaseline from '@mui/material/CssBaseline'
 import { ThemeProvider } from '@mui/material/styles'
+import { Polybase } from '@polybase/client'
+import { PolybaseProvider } from '@polybase/react'
 import { Analytics } from '@vercel/analytics/react'
 import type { AppProps } from 'next/app'
 import { Provider as RWBProvider } from 'react-wrap-balancer'
 import { Toaster } from 'sonner'
-import { PolybaseProvider } from '@polybase/react'
-import { Polybase } from '@polybase/client'
 
 const polybase = new Polybase({
   defaultNamespace:
@@ -25,6 +26,7 @@ function MyApp({ Component, pageProps: { ...pageProps } }: AppProps) {
         <RWBProvider>
           <ClientOnly>
             <Toaster position="top-center" richColors />
+            <CssBaseline />
             <Component {...pageProps} />
           </ClientOnly>
         </RWBProvider>
