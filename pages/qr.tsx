@@ -1,3 +1,4 @@
+import ScannerModal from '@/components/scanner-modal'
 import { QrScanner } from '@yudiel/react-qr-scanner'
 import { useState } from 'react'
 import { FormContainer, TextFieldElement } from 'react-hook-form-mui'
@@ -20,12 +21,7 @@ export default function Home() {
       <div className="flex w-32">
         <QRCode style={{ height: 'auto', maxWidth: '100%', width: '100%' }} value={url} />
       </div>
-      <div className="flex max-w-xs">
-        <QrScanner
-          onDecode={(result) => console.log(result)}
-          onError={(error) => console.log(error?.message)}
-        />
-      </div>
+      <ScannerModal />
     </>
   )
 }
