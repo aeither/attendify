@@ -21,7 +21,7 @@ export default function Layout({ children }: Props) {
   const pathname = router.pathname.split('/')[1]
 
   return (
-    <Box sx={{ pb: 7 }}>
+    <Box sx={{ pb: 7, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <AppBar position="static" className="rounded-none">
         <Toolbar>
           {/* <IconButton

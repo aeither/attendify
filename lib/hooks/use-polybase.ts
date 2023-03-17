@@ -10,10 +10,20 @@ import { asymEncrypt, asymDecrypt, getUint8Array, genKeys } from '../utils/encry
 const auth = typeof window !== 'undefined' ? new Auth() : null
 
 /**
+ * Reads
+ */
+
+// export const useUserInfo = (pubkey: string | undefined) => {
+//   const polybase = usePolybase()
+//   const userInfo = useRecord(polybase.collection('User').record(pubkey || ''))
+//   return userInfo
+// }
+
+/**
  * Utility
  */
 
-async function getPublicKey() {
+export async function getPublicKey() {
   if (!auth) return
   const msg = 'Login to app'
   const sig = await auth.ethPersonalSign(msg)
@@ -111,32 +121,11 @@ export function useAccount() {
       .collection('User')
       .record(publicKey)
       .call('setName', [name])
+
+    // Update local user
+    setName(res.data.name)
     return res
   }
-
-  const userInfo = async () => {
-    const publicKey = await getPublicKey()
-    if (!publicKey) return
-
-    const collectionReference = polybase
-      .collection('User')
-      .record(publicKey)
-      .onSnapshot(
-        (newRec) => {
-          console.log(
-            '🚀 ~ file: use-polybase.ts:129 ~ userInfo ~ newRec.data:',
-            newRec.data,
-          )
-        },
-        (err) => {
-          console.error(err)
-        },
-      )
-    collectionReference()
-  }
-  useEffect(() => {
-    userInfo()
-  }, [])
 
   useEffect(() => {
     if (!auth) return
