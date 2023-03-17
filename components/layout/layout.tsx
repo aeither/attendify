@@ -65,10 +65,10 @@ export default function Layout({ children }: Props) {
           />
           <BottomNavigationAction
             component={NextLinkComposed}
-            to={{ pathname: '/atst' }}
+            to={{ pathname: '/profile' }}
             label="Profile"
             icon={<Person />}
-            className={clsx(pathname === 'atst' && 'text-white')}
+            className={clsx(pathname === 'profile' && 'text-white')}
           />
         </BottomNavigation>
       </Paper>
