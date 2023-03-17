@@ -19,10 +19,10 @@ import { Provider as RWBProvider } from 'react-wrap-balancer'
 import { Toaster } from 'sonner'
 import { createClient, WagmiConfig } from 'wagmi'
 import { optimism, optimismGoerli } from 'wagmi/chains'
+import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
 
 const polybase = new Polybase({
-  defaultNamespace:
-    'pk/0xa6ca155c486fde1b93ec326c8d6d625a24cea697027449ea8a51dad1752e26998fd99b0ff13d7d3078fe5154a819868d171a2317f121b7328e7d15ca674ae3b3/alpha',
+  defaultNamespace: 'test-one',
 })
 
 if (!process.env.NEXT_PUBLIC_ALCHEMY_ID)
@@ -36,6 +36,16 @@ const client = createClient(
     appName: 'Attendify',
     alchemyId,
     chains,
+    // enableWebSocketProvider: false,
+    // connectors: [
+    //   new WalletConnectConnector({
+    //     chains: chains,
+    //     options: {
+    //       projectId: '',
+    //       showQrModal: false,
+    //     },
+    //   }),
+    // ],
   }),
 )
 

@@ -48,6 +48,31 @@ export function useEncrypt() {
   }
 }
 /**
+ * useEvent
+ */
+interface CreateEvent {
+  id: string
+  description: string
+  date: string
+  location: string
+  participant: string
+}
+
+export function useEvent() {
+  const polybase = usePolybase()
+
+  const createEvent = async (props: CreateEvent) => {
+    const publicKey = await getPublicKey()
+    if (!publicKey) return
+    const res = await polybase.collection('Event').create([publicKey])
+    return res
+  }
+
+  return {
+    createEvent,
+  }
+}
+/**
  * useAccount
  */
 
@@ -55,11 +80,9 @@ export function useAccount() {
   const polybase = usePolybase()
 
   const [authed, setAuthed] = useState(false)
-  const [name, setName] = useState('')
+  const [name, setName] = useState<string | null | undefined>()
   const [address, setAddress] = useState<string | null | undefined>()
-  // const { data, error, loading } = useRecord<string>(
-  //   polybase.collection('users').record('id'),
-  // )
+
   const signIn = async () => {
     if (!auth) return
     const res = await auth.signIn()
@@ -90,6 +113,30 @@ export function useAccount() {
       .call('setName', [name])
     return res
   }
+
+  const userInfo = async () => {
+    const publicKey = await getPublicKey()
+    if (!publicKey) return
+
+    const collectionReference = polybase
+      .collection('User')
+      .record(publicKey)
+      .onSnapshot(
+        (newRec) => {
+          console.log(
+            '🚀 ~ file: use-polybase.ts:129 ~ userInfo ~ newRec.data:',
+            newRec.data,
+          )
+        },
+        (err) => {
+          console.error(err)
+        },
+      )
+    collectionReference()
+  }
+  useEffect(() => {
+    userInfo()
+  }, [])
 
   useEffect(() => {
     if (!auth) return
