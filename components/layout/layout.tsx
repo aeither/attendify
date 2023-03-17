@@ -1,8 +1,4 @@
-import { useCopyToClipboard } from '@/lib/hooks/use-copy-to-clipboard'
-import { useAccount } from '@/lib/hooks/use-polybase'
-import ArchiveIcon from '@mui/icons-material/Archive'
-import FavoriteIcon from '@mui/icons-material/Favorite'
-import RestoreIcon from '@mui/icons-material/Restore'
+import { ControlPoint, Home, LocalActivity, Person } from '@mui/icons-material'
 import AppBar from '@mui/material/AppBar'
 import BottomNavigation from '@mui/material/BottomNavigation'
 import BottomNavigationAction from '@mui/material/BottomNavigationAction'
@@ -10,7 +6,10 @@ import Box from '@mui/material/Box'
 import Paper from '@mui/material/Paper'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
+import clsx from 'clsx'
+import { useRouter } from 'next/router'
 import * as React from 'react'
+import { NextLinkComposed } from '../ui/link'
 import ConnectButton from './connect-button'
 
 interface Props {
@@ -18,10 +17,8 @@ interface Props {
 }
 
 export default function Layout({ children }: Props) {
-  const [value, setValue] = React.useState(0)
-  const { authed, signIn, signOut, updateName, address, name, deleteAccount } =
-    useAccount()
-  const { copyToClipboard, hasCopied } = useCopyToClipboard()
+  const router = useRouter()
+  const pathname = router.pathname.split('/')[1]
 
   return (
     <Box sx={{ pb: 7 }}>
@@ -36,24 +33,43 @@ export default function Layout({ children }: Props) {
           >
             <MenuIcon />
           </IconButton> */}
-          <Typography component="div" sx={{ flexGrow: 1 }}>
-            Attendify
+          <Typography component="div" variant="h3" sx={{ flexGrow: 1 }}>
+            ⚪️ Attendify
           </Typography>
           <ConnectButton />
         </Toolbar>
       </AppBar>
       {children}
       <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
-        <BottomNavigation
-          showLabels
-          value={value}
-          onChange={(event, newValue) => {
-            setValue(newValue)
-          }}
-        >
-          <BottomNavigationAction label="Recents" icon={<RestoreIcon />} />
-          <BottomNavigationAction label="Favorites" icon={<FavoriteIcon />} />
-          <BottomNavigationAction label="Archive" icon={<ArchiveIcon />} />
+        <BottomNavigation showLabels>
+          <BottomNavigationAction
+            component={NextLinkComposed}
+            to={{ pathname: '/' }}
+            label="Home"
+            icon={<Home />}
+            className={clsx(pathname === '' && 'text-white')}
+          />
+          <BottomNavigationAction
+            component={NextLinkComposed}
+            to={{ pathname: '/create' }}
+            label="Create"
+            icon={<ControlPoint />}
+            className={clsx(pathname === 'create' && 'text-white')}
+          />
+          <BottomNavigationAction
+            component={NextLinkComposed}
+            to={{ pathname: '/ticket' }}
+            label="Tickets"
+            icon={<LocalActivity />}
+            className={clsx(pathname === 'ticket' && 'text-white')}
+          />
+          <BottomNavigationAction
+            component={NextLinkComposed}
+            to={{ pathname: '/atst' }}
+            label="Profile"
+            icon={<Person />}
+            className={clsx(pathname === 'atst' && 'text-white')}
+          />
         </BottomNavigation>
       </Paper>
     </Box>

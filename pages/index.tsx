@@ -42,36 +42,17 @@ export default function Home() {
         <div className="flex gap-2">
           <Typography variant="h2">Auth</Typography>
 
-          <Button onClick={() => updateName('hello')} variant="contained" color='secondary' >
+          <Button
+            onClick={() => updateName('hello')}
+            variant="contained"
+            color="secondary"
+          >
             Update record
           </Button>
 
           <Button onClick={() => deleteAccount()} variant="contained">
             Delete account
           </Button>
-
-          {authed && address ? (
-            <>
-              <Typography variant="h3">{name}</Typography>
-              <div className="flex items-center gap-2">
-                <Typography>{address}</Typography>
-                <IconButton onClick={() => copyToClipboard(address)}>
-                  {hasCopied ? (
-                    <CheckCircleOutline fontSize="small" />
-                  ) : (
-                    <ContentCopy fontSize="small" />
-                  )}
-                </IconButton>
-              </div>
-              <Button onClick={signOut} variant="contained">
-                Logout
-              </Button>
-            </>
-          ) : (
-            <Button onClick={signIn} variant="contained">
-              Login
-            </Button>
-          )}
         </div>
       </Layout>
     </>

@@ -25,7 +25,7 @@ export default function ConnectButton() {
         <>
           <Button
             id="basic-button"
-            variant="contained"
+            variant="outlined"
             aria-controls={open ? 'basic-menu' : undefined}
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
