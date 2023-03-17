@@ -1,6 +1,5 @@
 import { useCopyToClipboard } from '@/lib/hooks/use-copy-to-clipboard'
 import { useAccount } from '@/lib/hooks/use-polybase'
-import { CheckCircleOutline, ContentCopy } from '@mui/icons-material'
 import ArchiveIcon from '@mui/icons-material/Archive'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import RestoreIcon from '@mui/icons-material/Restore'
@@ -8,8 +7,6 @@ import AppBar from '@mui/material/AppBar'
 import BottomNavigation from '@mui/material/BottomNavigation'
 import BottomNavigationAction from '@mui/material/BottomNavigationAction'
 import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
-import IconButton from '@mui/material/IconButton'
 import Paper from '@mui/material/Paper'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
@@ -28,7 +25,7 @@ export default function Layout({ children }: Props) {
 
   return (
     <Box sx={{ pb: 7 }}>
-      <AppBar position="static" className='rounded-none'>
+      <AppBar position="static" className="rounded-none">
         <Toolbar>
           {/* <IconButton
             size="large"
@@ -39,7 +36,7 @@ export default function Layout({ children }: Props) {
           >
             <MenuIcon />
           </IconButton> */}
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Typography component="div" sx={{ flexGrow: 1 }}>
             Attendify
           </Typography>
           <ConnectButton />
