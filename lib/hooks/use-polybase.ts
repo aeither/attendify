@@ -102,8 +102,7 @@ export function useAccount() {
 
   const signOut = async () => {
     if (!auth) return
-    const res = await auth.signOut()
-    if (res) return
+    await auth.signOut()
     toast('Logged out')
   }
 
