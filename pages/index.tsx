@@ -1,6 +1,7 @@
+import EventCard from '@/components/event-card'
 import Layout from '@/components/layout/layout'
 import { useEvent } from '@/lib/hooks/use-polybase'
-import { Button, Typography } from '@mui/material'
+import { Button, Stack, Typography } from '@mui/material'
 
 export default function Home() {
   const { events } = useEvent()
@@ -30,12 +31,18 @@ export default function Home() {
           >
             Decrypt
           </Button>
+        </div>
 
-          {events.map(event => (
-            <>
-            
-            </>
-          ))}
+        <Typography variant="h2" className="flex w-full justify-start">
+          Events
+        </Typography>
+        <div className="flex w-full flex-col gap-2">
+          {events &&
+            events.map((event) => (
+              <>
+                <EventCard event={event} />
+              </>
+            ))}
         </div>
       </Layout>
     </>
