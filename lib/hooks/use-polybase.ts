@@ -5,6 +5,7 @@ import { EncryptedDataSecp256k1 } from '@polybase/util'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { useStore } from '../store'
+import { Event } from '../types'
 import { nanoid } from '../utils'
 import { asymEncrypt, asymDecrypt, getUint8Array, genKeys } from '../utils/encrypt'
 
@@ -100,7 +101,7 @@ export function useEvent() {
   }, [address])
 
   return {
-    events,
+    events: ((events.data && events.data.data) as unknown as Event[]) || undefined,
     createEvent,
   }
 }
