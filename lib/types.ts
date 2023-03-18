@@ -1,5 +1,5 @@
 export interface EventInfo {
-data: EventData
+  data: EventData
   block: Block
 }
 

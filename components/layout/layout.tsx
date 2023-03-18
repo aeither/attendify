@@ -39,7 +39,7 @@ export default function Layout({ children }: Props) {
           <ConnectButton />
         </Toolbar>
       </AppBar>
-      <div className="flex w-full max-w-screen-sm flex-col items-center gap-2 p-4">
+      <div className="flex w-full max-w-screen-sm flex-col items-start gap-2 p-4">
         {children}
       </div>
       <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
