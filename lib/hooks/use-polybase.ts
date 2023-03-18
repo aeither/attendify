@@ -65,7 +65,7 @@ interface CreateEvent {
   // id: string
   title: string
   description: string
-  date: number
+  date: string
   location: string
   // participant: string
 }
@@ -84,6 +84,7 @@ export function useEvent() {
     if (!publicKey) {
       throw new Error('PublicKey undefined. Sign in.')
     }
+
     const res = await polybase
       .collection('Event')
       .create([id, title, description, date, location, publicKey])
