@@ -6,15 +6,15 @@ import Typography from '@mui/material/Typography'
 import { CollectionRecordResponse } from '@polybase/client'
 import Link from 'next/link'
 
-type Props = {
+export type TicketCardProps = {
   ticket: CollectionRecordResponse<TicketData>
 }
 
-export default function TicketCard({ ticket }: Props) {
+export default function TicketCard({ ticket }: TicketCardProps) {
   const { type, price, quantity, eventId, eventTitle } = ticket.data
 
   return (
-    <Card sx={{ display: 'flex' }}>
+    <Card className="flex w-full">
       <CardMedia
         component="img"
         sx={{ width: 125 }}

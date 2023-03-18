@@ -1,36 +1,15 @@
-import { useState } from 'react'
-import { FormContainer, TextFieldElement } from 'react-hook-form-mui'
-import QRCode from 'react-qr-code'
 import Layout from '@/components/layout/layout'
-import Typography from '@mui/material/Typography'
+import TicketModal from '@/components/ticket-modal'
 import { useEvent, useTicket } from '@/lib/hooks/use-polybase'
-import EventCard from '@/components/event-card'
-import TicketCard from '@/components/ticket-card'
+import Typography from '@mui/material/Typography'
+import { useState } from 'react'
 
 export default function Home() {
-  const [url, setUrl] = useState('')
-  const { createEvent, organizerEvents } = useEvent()
   const { userTickets } = useTicket()
 
   return (
     <>
       <Layout>
-        <FormContainer
-          defaultValues={{ name: '' }}
-          onSuccess={(data) => {
-            console.log(data)
-            setUrl(data.name)
-          }}
-        >
-          <TextFieldElement name="name" label="Name" required />
-        </FormContainer>
-        <div className="flex w-32">
-          <QRCode
-            style={{ height: 'auto', maxWidth: '100%', width: '100%' }}
-            value={url}
-          />
-        </div>
-
         <Typography variant="h2" className="flex w-full justify-start">
           Tickets
         </Typography>
@@ -38,7 +17,7 @@ export default function Home() {
           {userTickets &&
             userTickets.map((ticket) => (
               <>
-                <TicketCard ticket={ticket} />
+                <TicketModal ticket={ticket} />
               </>
             ))}
         </div>
