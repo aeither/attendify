@@ -60,10 +60,10 @@ export default function Layout({ children }: Props) {
           />
           <BottomNavigationAction
             component={NextLinkComposed}
-            to={{ pathname: '/ticket' }}
+            to={{ pathname: '/tickets' }}
             label="Tickets"
             icon={<LocalActivity />}
-            className={clsx(pathname === 'ticket' && 'text-white')}
+            className={clsx(pathname === 'tickets' && 'text-white')}
           />
           <BottomNavigationAction
             component={NextLinkComposed}
