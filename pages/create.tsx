@@ -45,7 +45,7 @@ export default function Create() {
             const promise = createEvent({
               title: data.title,
               description: data.description,
-              date: String(new Date(data.date).getTime() / 1000),
+              date: String(new Date(data.date).getTime()),
               location: data.location,
             })
 

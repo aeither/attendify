@@ -5,7 +5,7 @@ import { EncryptedDataSecp256k1 } from '@polybase/util'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { useStore } from '../store'
-import { EventInfo } from '../types'
+import { EventData, EventInfo } from '../types'
 import { nanoid } from '../utils'
 import { asymEncrypt, asymDecrypt, getUint8Array, genKeys } from '../utils/encrypt'
 
@@ -15,11 +15,13 @@ const auth = typeof window !== 'undefined' ? new Auth() : null
  * Reads
  */
 
-// export const useUserInfo = (pubkey: string | undefined) => {
-//   const polybase = usePolybase()
-//   const userInfo = useRecord(polybase.collection('User').record(pubkey || ''))
-//   return userInfo
-// }
+export const useEventDetail = (id: string | string[] | undefined) => {
+  const polybase = usePolybase()
+  const eventDetail = useRecord<EventData>(
+    typeof id === 'string' ? polybase.collection('Event').record(id) : null,
+  )
+  return eventDetail
+}
 
 /**
  * Utility
@@ -75,9 +77,9 @@ export function useEvent() {
   const polybase = usePolybase()
   const localPubKey = useStore((state) => state.publicKey)
 
-  const events = useCollection(polybase.collection('Event'))
+  const events = useCollection<EventData>(polybase.collection('Event'))
 
-  const organizerEvents = useCollection(
+  const organizerEvents = useCollection<EventData>(
     localPubKey ? polybase.collection('Event').where('owner', '==', localPubKey) : null,
   )
 
@@ -97,10 +99,8 @@ export function useEvent() {
   }
 
   return {
-    events: ((events.data && events.data.data) as unknown as EventInfo[]) || undefined,
-    organizerEvents:
-      ((organizerEvents.data && organizerEvents.data.data) as unknown as EventInfo[]) ||
-      undefined,
+    events: (events.data && events.data.data) || undefined,
+    organizerEvents: (organizerEvents.data && organizerEvents.data.data) || undefined,
     createEvent,
   }
 }
