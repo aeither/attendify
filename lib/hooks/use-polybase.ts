@@ -5,6 +5,7 @@ import { EncryptedDataSecp256k1 } from '@polybase/util'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { useStore } from '../store'
+import { nanoid } from '../utils'
 import { asymEncrypt, asymDecrypt, getUint8Array, genKeys } from '../utils/encrypt'
 
 const auth = typeof window !== 'undefined' ? new Auth() : null
@@ -61,28 +62,41 @@ export function useEncrypt() {
  * useEvent
  */
 interface CreateEvent {
-  id: string
+  // id: string
+  title: string
   description: string
-  date: string
+  date: number
   location: string
-  participant: string
+  // participant: string
 }
 
 export function useEvent() {
   const polybase = usePolybase()
+  const { address } = useAccount()
+  const [publicKey, setPublicKey] = useState<string>()
 
   const events = useCollection(polybase.collection('Event'))
 
   const createEvent = async (props: CreateEvent) => {
-    const publicKey = await getPublicKey()
-    if (!publicKey) return
-    const res = await polybase.collection('Event').create([publicKey])
+    const { title, description, date, location } = props
+    const id = nanoid(16)
+
+    if (!publicKey) {
+      throw new Error('PublicKey undefined. Sign in.')
+    }
+    const res = await polybase
+      .collection('Event')
+      .create([id, title, description, date, location, publicKey])
     return res
   }
 
-  // useEffect(() => {
-  //   getId().then((id) => setId(id))
-  // }, [])
+  useEffect(() => {
+    if (address) {
+      getPublicKey().then((publicKey) => {
+        if (publicKey) setPublicKey(publicKey)
+      })
+    }
+  }, [address])
 
   return {
     events,
