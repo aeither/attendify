@@ -1,5 +1,5 @@
 import Layout from '@/components/layout/layout'
-import { useAccount, useEventDetail } from '@/lib/hooks/use-polybase'
+import { useAccount, useEventDetail, useTicket } from '@/lib/hooks/use-polybase'
 import { useStore } from '@/lib/store'
 import formatDate from '@/lib/utils/date'
 import { AccessTime, LocationCity } from '@mui/icons-material'
@@ -7,13 +7,15 @@ import ArrowBack from '@mui/icons-material/ArrowBack'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import Image from 'next/image'
-import { useRouter } from 'next/router'
+import { Router, useRouter } from 'next/router'
 import ScannerModal from '@/components/scanner-modal'
+import { toast } from 'sonner'
 
 export default function Home() {
   const router = useRouter()
   const { id } = router.query
   const { data } = useEventDetail(id)
+  const { buyTicket } = useTicket()
   const localPubKey = useStore((state) => state.publicKey)
 
   return (
@@ -47,7 +49,20 @@ export default function Home() {
               {data.data.owner === localPubKey ? (
                 <ScannerModal />
               ) : (
-                <Button variant="contained" onClick={() => {}}>
+                <Button
+                  variant="contained"
+                  onClick={async () => {
+                    await buyTicket({
+                      type: 'general',
+                      quantity: 1,
+                      price: 0,
+                      eventTitle: data.data.title,
+                      eventId: data.data.id,
+                    })
+                    toast.success('Ticked purchased successfully!')
+                    router.push('/tickets')
+                  }}
+                >
                   Buy Ticket
                 </Button>
               )}
