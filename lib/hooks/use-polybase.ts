@@ -73,8 +73,7 @@ interface CreateEvent {
 
 export function useEvent() {
   const polybase = usePolybase()
-  const { address } = useAccount()
-  const [publicKey, setPublicKey] = useState<string>()
+  const localPubKey = useStore((state) => state.publicKey)
 
   const events = useCollection(polybase.collection('Event'))
 
@@ -82,6 +81,7 @@ export function useEvent() {
     const { title, description, date, location } = props
     const id = nanoid(16)
 
+    const publicKey = localPubKey || (await getPublicKey())
     if (!publicKey) {
       throw new Error('PublicKey undefined. Sign in.')
     }
@@ -92,14 +92,6 @@ export function useEvent() {
     return res
   }
 
-  useEffect(() => {
-    if (address) {
-      getPublicKey().then((publicKey) => {
-        if (publicKey) setPublicKey(publicKey)
-      })
-    }
-  }, [address])
-
   return {
     events: ((events.data && events.data.data) as unknown as Event[]) || undefined,
     createEvent,
@@ -108,13 +100,15 @@ export function useEvent() {
 /**
  * useAccount
  */
-
 export function useAccount() {
   const polybase = usePolybase()
 
   const [authed, setAuthed] = useState(false)
   const [name, setName] = useState<string | null | undefined>()
   const [address, setAddress] = useState<string | null | undefined>()
+
+  const localPubKey = useStore((state) => state.publicKey)
+  const setLocalPubKey = useStore((state) => state.setPublicKey)
 
   const signIn = async () => {
     if (!auth) return
@@ -130,14 +124,14 @@ export function useAccount() {
   }
 
   const deleteAccount = async () => {
-    const publicKey = await getPublicKey()
+    const publicKey = localPubKey || (await getPublicKey())
     if (!publicKey) return
     const res = await polybase.collection('User').record(publicKey).call('del')
     return res
   }
 
   const updateName = async (name: string) => {
-    const publicKey = await getPublicKey()
+    const publicKey = localPubKey || (await getPublicKey())
     if (!publicKey) return
     const res = await polybase
       .collection('User')
@@ -178,6 +172,8 @@ export function useAccount() {
         const res = await polybase.collection('User').create([publicKey])
         setName(res.data.name)
       }
+
+      setLocalPubKey(publicKey)
     })
 
     return unsub
