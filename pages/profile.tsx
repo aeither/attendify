@@ -1,4 +1,3 @@
-import { Attest } from '@/components/attest'
 import Layout from '@/components/layout/layout'
 import { useAccount } from '@/lib/hooks/use-polybase'
 import { Avatar, Button, Typography } from '@mui/material'
@@ -39,8 +38,6 @@ export default function Profile() {
         {/* <Button onClick={() => deleteAccount()} variant="contained">
               Delete account
             </Button> */}
-
-        <Attest />
       </Layout>
     </>
   )

@@ -77,6 +77,10 @@ export function useEvent() {
 
   const events = useCollection(polybase.collection('Event'))
 
+  const organizerEvents = useCollection(
+    localPubKey ? polybase.collection('Event').where('owner', '==', localPubKey) : null,
+  )
+
   const createEvent = async (props: CreateEvent) => {
     const { title, description, date, location } = props
     const id = nanoid(16)
@@ -88,12 +92,15 @@ export function useEvent() {
 
     const res = await polybase
       .collection('Event')
-      .create([id, title, description, date, location, publicKey])
+      .create([id, title, description, date, location, publicKey, publicKey])
     return res
   }
 
   return {
     events: ((events.data && events.data.data) as unknown as EventInfo[]) || undefined,
+    organizerEvents:
+      ((organizerEvents.data && organizerEvents.data.data) as unknown as EventInfo[]) ||
+      undefined,
     createEvent,
   }
 }
@@ -161,7 +168,8 @@ export function useAccount() {
       })
 
       // get public
-      let publicKey = authState.publicKey ? authState.publicKey : await getPublicKey()
+      // authState.publicKey contain pubkey only for Metamask
+      let publicKey = localPubKey ? localPubKey : await getPublicKey()
       if (!publicKey) return
 
       // Create user if not exists

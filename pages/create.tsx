@@ -1,3 +1,4 @@
+import { Attest } from '@/components/attest'
 import Layout from '@/components/layout/layout'
 import ScannerModal from '@/components/scanner-modal'
 import { useEvent } from '@/lib/hooks/use-polybase'
@@ -12,6 +13,7 @@ import {
   TextFieldElement,
 } from 'react-hook-form-mui'
 import { toast } from 'sonner'
+import EventCard from '@/components/event-card'
 
 interface SubmitData {
   title: string
@@ -21,7 +23,7 @@ interface SubmitData {
 }
 
 export default function Create() {
-  const { createEvent } = useEvent()
+  const { createEvent, organizerEvents } = useEvent()
 
   return (
     <>
@@ -33,7 +35,7 @@ export default function Create() {
         <Divider />
 
         <FormContainer
-          FormProps={{ className: 'flex w-full flex-col p-4' }}
+          FormProps={{ className: 'flex w-full flex-col' }}
           defaultValues={{ title: '', description: '', date: null, location: '' }}
           onSuccess={(data: SubmitData, e) => {
             e?.preventDefault()
@@ -55,7 +57,7 @@ export default function Create() {
           }}
         >
           <Stack spacing={3}>
-            <Typography gutterBottom variant="h4" component="div">
+            <Typography gutterBottom variant="h2" component="div">
               Create new Event
             </Typography>
             <TextFieldElement name="title" label="Title" margin="normal" required />
@@ -65,13 +67,29 @@ export default function Create() {
               margin="normal"
               required
             />
-            <DateTimePickerElement name="date" label="Datetime Picker" required />
+            <DateTimePickerElement name="date" label="Date" required />
             <TextFieldElement name="location" label="Location" margin="normal" required />
             <Button type="submit" variant="contained">
               Create Event
             </Button>
           </Stack>
         </FormContainer>
+
+        <Divider className="h-4" />
+
+        <Typography variant="h2" className="flex w-full justify-start">
+          Events
+        </Typography>
+        <div className="flex w-full flex-col gap-2">
+          {organizerEvents &&
+            organizerEvents.map((event) => (
+              <>
+                <EventCard event={event} />
+              </>
+            ))}
+        </div>
+
+        <Attest />
       </Layout>
     </>
   )

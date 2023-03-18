@@ -5,7 +5,6 @@ import { Button, Stack, Typography } from '@mui/material'
 
 export default function Home() {
   const { events } = useEvent()
-  console.log('🚀 ~ file: index.tsx:7 ~ Home ~ events:', events)
 
   return (
     <>

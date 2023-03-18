@@ -13,6 +13,7 @@ import {
 import { Address } from '@wagmi/core'
 import { BigNumber } from 'ethers'
 import { hexlify, isAddress, isHexString, toUtf8Bytes } from 'ethers/lib/utils.js'
+import Typography from '@mui/material/Typography'
 
 export type WagmiBytes = `0x${string}`
 export const createKey = (rawKey: string): WagmiBytes => {
@@ -57,12 +58,7 @@ export function Attest() {
   const { address } = useAccount()
   const [value, setValue] = useState('Hello world')
 
-  /**
-   * The key of the attestation
-   * @see https://www.npmjs.com/package/@eth-optimism/atst
-   */
   const key = createKey('hello-world')
-
   const newAttestation = createValue(value)
 
   const { config } = usePrepareAttestationStationAttest({
@@ -84,8 +80,10 @@ export function Attest() {
   })
 
   return (
-    <div>
-      <h2>Attestoooooor</h2>
+    <div className="flex w-full flex-col gap-2">
+      <Typography gutterBottom variant="h2" component="div">
+        Attest
+      </Typography>
       <ConnectKitButton />
       <div>Current attestation: {attestation ? parseString(attestation) : 'none'}</div>
       <input
