@@ -68,12 +68,18 @@ collection Ticket {
   type: string;
   price: number;
   quantity: number;
+  eventTitle: string;
+  eventId: string;
+  userId: string;
 
-  constructor (id: string, type: string, price: number, quantity: number) {
+  constructor (id: string, type: string, price: number, quantity: number, eventTitle: string, eventId: string, userId: string) {
     this.id = id;
     this.type = type;
     this.price = price;
     this.quantity = quantity;
+    this.eventTitle = eventTitle;
+    this.eventId = eventId;
+    this.userId = userId;
   }
 }
 
@@ -82,11 +88,13 @@ collection Order {
   id: string;
   eventId: string;
   ticketId: string;
+  userId: string;
 
-  constructor (id: string, eventId: string, ticketId: string) {
+  constructor (id: string, eventId: string, ticketId: string, userId: string) {
     this.id = id;
     this.eventId = eventId;
     this.ticketId = ticketId;
+    this.userId = userId;
   }
 }
 `
