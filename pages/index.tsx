@@ -1,7 +1,10 @@
 import Layout from '@/components/layout/layout'
+import { useEvent } from '@/lib/hooks/use-polybase'
 import { Button, Typography } from '@mui/material'
 
 export default function Home() {
+  const { events } = useEvent()
+
   return (
     <>
       <Layout>
@@ -26,6 +29,8 @@ export default function Home() {
           >
             Decrypt
           </Button>
+
+          {/* {events.data && events.data} */}
         </div>
       </Layout>
     </>

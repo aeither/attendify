@@ -19,7 +19,10 @@ import { Provider as RWBProvider } from 'react-wrap-balancer'
 import { Toaster } from 'sonner'
 import { createClient, WagmiConfig } from 'wagmi'
 import { optimism, optimismGoerli } from 'wagmi/chains'
-import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
+// import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
+import { LocalizationProvider, LocalizationProviderProps } from '@mui/x-date-pickers'
+import DateFnsProvider from '@/components/layout/date-fns-provider'
 
 const polybase = new Polybase({
   defaultNamespace: 'test-one',
@@ -62,9 +65,11 @@ function MyApp({ Component, pageProps: { ...pageProps } }: AppProps) {
               <ConnectKitProvider theme="midnight">
                 <RWBProvider>
                   <ClientOnly>
-                    <Toaster position="top-center" richColors />
-                    <CssBaseline />
-                    <Component {...pageProps} />
+                    <DateFnsProvider dateAdapter={AdapterDateFns}>
+                      <Toaster position="top-center" richColors />
+                      <CssBaseline />
+                      <Component {...pageProps} />
+                    </DateFnsProvider>
                   </ClientOnly>
                 </RWBProvider>
               </ConnectKitProvider>

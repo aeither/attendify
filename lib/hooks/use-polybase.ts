@@ -71,6 +71,8 @@ interface CreateEvent {
 export function useEvent() {
   const polybase = usePolybase()
 
+  const events = useCollection(polybase.collection('Event'))
+
   const createEvent = async (props: CreateEvent) => {
     const publicKey = await getPublicKey()
     if (!publicKey) return
@@ -78,7 +80,12 @@ export function useEvent() {
     return res
   }
 
+  // useEffect(() => {
+  //   getId().then((id) => setId(id))
+  // }, [])
+
   return {
+    events,
     createEvent,
   }
 }
