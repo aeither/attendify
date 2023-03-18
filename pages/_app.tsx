@@ -66,7 +66,7 @@ function MyApp({ Component, pageProps: { ...pageProps } }: AppProps) {
                 <RWBProvider>
                   <ClientOnly>
                     <DateFnsProvider dateAdapter={AdapterDateFns}>
-                      <Toaster position="top-center" richColors />
+                      <Toaster position="top-center" richColors theme="dark" />
                       <CssBaseline />
                       <Component {...pageProps} />
                     </DateFnsProvider>

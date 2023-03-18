@@ -50,7 +50,7 @@ collection Event {
   location: string;
   participants: string[];
 
-  constructor (id: string, title: string, description: string, date: string, location: string, participant: string) {
+  constructor (id: string, title: string, description: string, date: number, location: string, participant: string) {
     this.id = id;
     this.title = title;
     this.description = description;

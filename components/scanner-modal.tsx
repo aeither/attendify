@@ -26,7 +26,7 @@ export default function ScannerModal() {
 
   return (
     <div>
-      <Button onClick={handleOpen}>Open modal</Button>
+      <Button onClick={handleOpen}>Scan QR</Button>
       <Dialog
         fullScreen
         open={open}
