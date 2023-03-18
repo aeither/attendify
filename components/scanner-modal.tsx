@@ -26,7 +26,9 @@ export default function ScannerModal() {
 
   return (
     <div>
-      <Button onClick={handleOpen}>Scan QR</Button>
+      <Button variant="contained" onClick={handleOpen}>
+        Scan QR
+      </Button>
       <Dialog
         fullScreen
         open={open}
@@ -52,6 +54,10 @@ export default function ScannerModal() {
           <QrScanner
             containerStyle={{ height: '100%' }}
             onDecode={(result) => {
+              if (result === 'decoded event id with owner key')
+                // update db and attest to user address event info
+                console.log(result)
+
               console.log(result)
               handleClose()
               toast.success(result)

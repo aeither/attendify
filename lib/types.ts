@@ -8,10 +8,11 @@ export interface Block {
 }
 
 export interface EventData {
-  date: string
-  description: string
   id: string
-  location: string
-  participants: string[]
   title: string
+  description: string
+  date: string
+  location: string
+  owner: string
+  participants: string[]
 }

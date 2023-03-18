@@ -1,6 +1,5 @@
 import { Attest } from '@/components/attest'
 import Layout from '@/components/layout/layout'
-import ScannerModal from '@/components/scanner-modal'
 import { useEvent } from '@/lib/hooks/use-polybase'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
@@ -28,11 +27,6 @@ export default function Create() {
   return (
     <>
       <Layout>
-        <Box sx={{ p: 2 }}>
-          <ScannerModal />
-        </Box>
-
-        <Divider />
 
         <FormContainer
           FormProps={{ className: 'flex w-full flex-col' }}

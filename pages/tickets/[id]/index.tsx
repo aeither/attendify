@@ -1,5 +1,6 @@
 import Layout from '@/components/layout/layout'
-import { useEventDetail } from '@/lib/hooks/use-polybase'
+import { useAccount, useEventDetail } from '@/lib/hooks/use-polybase'
+import { useStore } from '@/lib/store'
 import formatDate from '@/lib/utils/date'
 import { AccessTime, LocationCity } from '@mui/icons-material'
 import ArrowBack from '@mui/icons-material/ArrowBack'
@@ -7,13 +8,14 @@ import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
+import ScannerModal from '@/components/scanner-modal'
 
 export default function Home() {
   const router = useRouter()
   const { id } = router.query
   const { data } = useEventDetail(id)
-  console.log('🚀 ~ file: index.tsx:12 ~ Home ~ data:', data)
-  const xxx = new Date()
+  const localPubKey = useStore((state) => state.publicKey)
+
   return (
     <>
       <Layout>
@@ -40,10 +42,18 @@ export default function Home() {
             <Typography variant="body1" className=" text-slate-300">
               {data.data.description}
             </Typography>
+
+            <div className="">
+              {data.data.owner === localPubKey ? (
+                <ScannerModal />
+              ) : (
+                <Button variant="contained" onClick={() => {}}>
+                  Buy Ticket
+                </Button>
+              )}
+            </div>
           </div>
         )}
-
-        <Button variant="contained">Buy Ticket</Button>
       </Layout>
     </>
   )
