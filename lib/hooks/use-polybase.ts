@@ -5,7 +5,7 @@ import { EncryptedDataSecp256k1 } from '@polybase/util'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { useStore } from '../store'
-import { EventData, EventInfo } from '../types'
+import { EventData, EventInfo, TicketData } from '../types'
 import { nanoid } from '../utils'
 import { asymEncrypt, asymDecrypt, getUint8Array, genKeys } from '../utils/encrypt'
 
@@ -61,17 +61,43 @@ export function useEncrypt() {
     decrypt,
   }
 }
+
+/**
+ * useTicket
+ */
+
+export function useTicket() {
+  const polybase = usePolybase()
+  const localPubKey = useStore((state) => state.publicKey)
+
+  const userTickets = useCollection<TicketData>(
+    localPubKey ? polybase.collection('Ticket').where('userId', '==', localPubKey) : null,
+  )
+
+  const buyTicket = async (props: Omit<TicketData, 'id' | 'userId'>) => {
+    const { type, price, quantity, eventTitle, eventId } = props
+    const id = nanoid(16)
+
+    const publicKey = localPubKey || (await getPublicKey())
+    if (!publicKey) {
+      throw new Error('PublicKey undefined. Sign in.')
+    }
+
+    const res = await polybase
+      .collection('Ticket')
+      .create([id, type, price, quantity, eventTitle, eventId, publicKey])
+    return res
+  }
+
+  return {
+    userTickets: (userTickets.data && userTickets.data.data) || undefined,
+    buyTicket,
+  }
+}
+
 /**
  * useEvent
  */
-interface CreateEvent {
-  // id: string
-  title: string
-  description: string
-  date: string
-  location: string
-  // participant: string
-}
 
 export function useEvent() {
   const polybase = usePolybase()
@@ -83,7 +109,7 @@ export function useEvent() {
     localPubKey ? polybase.collection('Event').where('owner', '==', localPubKey) : null,
   )
 
-  const createEvent = async (props: CreateEvent) => {
+  const createEvent = async (props: Omit<EventData, 'id' | 'owner' | 'participants'>) => {
     const { title, description, date, location } = props
     const id = nanoid(16)
 
@@ -104,6 +130,7 @@ export function useEvent() {
     createEvent,
   }
 }
+
 /**
  * useAccount
  */

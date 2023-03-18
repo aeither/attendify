@@ -16,3 +16,13 @@ export interface EventData {
   owner: string
   participants: string[]
 }
+
+export interface TicketData {
+  id: string
+  type: string
+  price: number
+  quantity: number
+  eventTitle: string
+  eventId: string
+  userId: string
+}
