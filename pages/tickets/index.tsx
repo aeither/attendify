@@ -1,8 +1,7 @@
 import Layout from '@/components/layout/layout'
 import TicketModal from '@/components/ticket-modal'
-import { useEvent, useTicket } from '@/lib/hooks/use-polybase'
+import { useTicket } from '@/lib/hooks/use-polybase'
 import Typography from '@mui/material/Typography'
-import { useState } from 'react'
 
 export default function Home() {
   const { userTickets } = useTicket()

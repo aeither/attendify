@@ -27,7 +27,6 @@ export default function Create() {
   return (
     <>
       <Layout>
-
         <FormContainer
           FormProps={{ className: 'flex w-full flex-col' }}
           defaultValues={{ title: '', description: '', date: null, location: '' }}
