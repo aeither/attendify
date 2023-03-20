@@ -1,6 +1,7 @@
 import EventCard from '@/components/event-card'
 import Layout from '@/components/layout/layout'
 import { useAccount, useEvent } from '@/lib/hooks/use-polybase'
+import { useStore } from '@/lib/store'
 import Button from '@mui/material/Button'
 import Divider from '@mui/material/Divider'
 import Stack from '@mui/material/Stack'
@@ -22,6 +23,7 @@ interface SubmitData {
 export default function Create() {
   const { createEvent, organizerEvents } = useEvent()
   const { accountInfo } = useAccount()
+  const decryptKey = useStore((state) => state.decryptKey)
 
   return (
     <>
@@ -45,7 +47,7 @@ export default function Create() {
             toast.promise(promise, {
               loading: 'Loading',
               success: 'Success',
-              error: 'Error',
+              error: (err) => `${err}`,
             })
           }}
         >
@@ -53,6 +55,13 @@ export default function Create() {
             <Typography gutterBottom variant="h2" component="div">
               Create new Event
             </Typography>
+
+            {!decryptKey && (
+              <Typography gutterBottom variant="body2" component="div">
+                Make sure to have generated a encryption keypair first in the profile
+                page.
+              </Typography>
+            )}
             <TextFieldElement name="title" label="Title" margin="normal" required />
             <TextFieldElement
               name="description"
@@ -71,7 +80,7 @@ export default function Create() {
         <Divider className="h-4" />
 
         <Typography variant="h2" className="flex w-full justify-start">
-          Events
+          My Events
         </Typography>
         <div className="flex w-full flex-col gap-2">
           {organizerEvents &&

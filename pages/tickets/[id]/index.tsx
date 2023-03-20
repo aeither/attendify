@@ -124,30 +124,6 @@ export default function Home() {
             >
               Buy Ticket
             </Button>
-
-            <div className="flex w-full flex-col">
-              {data.data.owner === localPubKey ? (
-                <ScannerModal />
-              ) : (
-                <Button
-                  variant="contained"
-                  onClick={async () => {
-                    await buyTicket({
-                      type: 'general',
-                      encryptedData: 'test data',
-                      quantity: 1,
-                      price: 0,
-                      eventTitle: data.data.title,
-                      eventId: data.data.id,
-                    })
-                    toast.success('Ticked purchased successfully!')
-                    router.push('/tickets')
-                  }}
-                >
-                  Buy Ticket
-                </Button>
-              )}
-            </div>
           </div>
         )}
       </Layout>

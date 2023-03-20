@@ -1,4 +1,5 @@
 import Layout from '@/components/layout/layout'
+import ScannerModal from '@/components/scanner-modal'
 import { useAccount } from '@/lib/hooks/use-polybase'
 import { useStore } from '@/lib/store'
 import { genKeys } from '@/lib/utils/encrypt'
@@ -57,6 +58,8 @@ export default function Profile() {
             </div>
           </FormContainer>
         )}
+
+        <ScannerModal />
 
         <Divider />
 

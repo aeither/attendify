@@ -17,9 +17,12 @@ type AttestProps = {
 export function Attest(props: AttestProps) {
   const { setDecryptedContent, decryptedContent } = props
 
+  // TODO temp solution
+  const ethAddress = decryptedContent.address.slice(0, 42) as any
+
   const { attestation, isLoading, writeAsync } = useAtst({
     eventId: decryptedContent.eventId,
-    receiver: decryptedContent.address as any,
+    receiver: ethAddress,
   })
 
   return (

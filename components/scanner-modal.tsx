@@ -36,7 +36,7 @@ export default function ScannerModal() {
 
   return (
     <>
-      <Button variant="contained" onClick={handleOpen}>
+      <Button fullWidth variant="contained" onClick={handleOpen}>
         Scan QR
       </Button>
       <Dialog
@@ -72,7 +72,13 @@ export default function ScannerModal() {
               }}
             >
               <Stack spacing={2}>
+                <Typography>{decryptedContent.eventTitle}</Typography>
                 <Typography>ticket{decryptedContent.tickedId}</Typography>
+                <Typography>
+                  {decryptedContent.address.slice(0, 4) +
+                    '...' +
+                    decryptedContent.address.slice(-4)}
+                </Typography>
                 <Attest
                   setDecryptedContent={setDecryptedContent}
                   decryptedContent={decryptedContent}
