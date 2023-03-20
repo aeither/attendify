@@ -1,14 +1,15 @@
 import Layout from '@/components/layout/layout'
-import { useAccount, useEventDetail, useTicket } from '@/lib/hooks/use-polybase'
+import ScannerModal from '@/components/scanner-modal'
+import { useEventDetail, useTicket } from '@/lib/hooks/use-polybase'
 import { useStore } from '@/lib/store'
 import formatDate from '@/lib/utils/date'
 import { AccessTime, LocationCity } from '@mui/icons-material'
 import ArrowBack from '@mui/icons-material/ArrowBack'
+import { IconButton } from '@mui/material'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import Image from 'next/image'
-import { Router, useRouter } from 'next/router'
-import ScannerModal from '@/components/scanner-modal'
+import { useRouter } from 'next/router'
 import { toast } from 'sonner'
 
 export default function Home() {
@@ -21,7 +22,9 @@ export default function Home() {
   return (
     <>
       <Layout>
-        <ArrowBack />
+        <IconButton onClick={() => router.back()}>
+          <ArrowBack />
+        </IconButton>
         {data && (
           <div className="flex w-full flex-col gap-2">
             <div className="relative h-56 w-full">
