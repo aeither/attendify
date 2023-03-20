@@ -1,5 +1,5 @@
 import { useCopyToClipboard } from '@/lib/hooks/use-copy-to-clipboard'
-import { useAccount } from '@/lib/hooks/use-polybase'
+import { usePBAccount } from '@/lib/hooks/use-polybase'
 import { CheckCircleOutline, ContentCopy } from '@mui/icons-material'
 import Button from '@mui/material/Button'
 import Menu from '@mui/material/Menu'
@@ -16,7 +16,7 @@ export default function ConnectButton() {
     setAnchorEl(null)
   }
   const { authed, signIn, signOut, updateName, address, name, deleteAccount } =
-    useAccount()
+    usePBAccount()
   const { copyToClipboard, hasCopied } = useCopyToClipboard()
 
   return (

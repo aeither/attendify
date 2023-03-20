@@ -74,7 +74,7 @@ export async function getPublicKey() {
 export function useTicket() {
   const polybase = usePolybase()
   const localPubKey = useStore((state) => state.publicKey)
-  const { accountInfo, address } = useAccount()
+  const { accountInfo, address } = usePBAccount()
 
   const userTickets = useCollection<TicketData>(
     localPubKey ? polybase.collection('Ticket').where('userId', '==', localPubKey) : null,
@@ -178,7 +178,7 @@ export function useEvent() {
 /**
  * useAccount
  */
-export function useAccount() {
+export function usePBAccount() {
   const polybase = usePolybase()
 
   const [authed, setAuthed] = useState(false)

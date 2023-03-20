@@ -1,20 +1,24 @@
 import Layout from '@/components/layout/layout'
 import ScannerModal from '@/components/scanner-modal'
-import { useAccount } from '@/lib/hooks/use-polybase'
+import { useMyAttestations } from '@/lib/hooks/use-atst'
+import { usePBAccount } from '@/lib/hooks/use-polybase'
 import { useStore } from '@/lib/store'
 import { genKeys } from '@/lib/utils/encrypt'
 import { Edit } from '@mui/icons-material'
-import { Avatar, Box, Button, Divider, Input, Stack, Typography } from '@mui/material'
+import { Avatar, Button, Divider, Input, Stack, Typography } from '@mui/material'
 import { encodeToString } from '@polybase/util'
 import { useState } from 'react'
 import { FormContainer, TextFieldElement } from 'react-hook-form-mui'
 
 export default function Profile() {
-  const { updateName, updateEncryptPubKey, name, address } = useAccount()
+  const { updateName, updateEncryptPubKey, name, address } = usePBAccount()
   const [encryptionPrivKey, setEncryptionPrivKey] = useState<Uint8Array>()
   const setDecryptKey = useStore((state) => state.setDecryptKey)
   const decryptKey = useStore((state) => state.decryptKey)
   const [editMode, setEditMode] = useState(false)
+  const { refetch, attestations } = useMyAttestations()
+  refetch()
+  console.log('🚀 ~ file: profile.tsx:20 ~ Profile ~ attestations:', attestations)
 
   return (
     <>

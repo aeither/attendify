@@ -1,6 +1,6 @@
 import { useNetwork } from 'wagmi'
 
-import { useAtst } from '@/lib/hooks/use-atst'
+import { useSendAttestation } from '@/lib/hooks/use-atst'
 import { parseString } from '@/lib/utils/atst'
 import Button from '@mui/material/Button'
 import { ConnectKitButton } from 'connectkit'
@@ -18,11 +18,11 @@ export function Attest(props: AttestProps) {
   const { setDecryptedContent, decryptedContent } = props
 
   // TODO temp solution
-  const ethAddress = decryptedContent.address.slice(0, 42) as any
+  const ethAddress = decryptedContent.address.slice(0, 42) as `0x${string}`
 
-  const { attestation, isLoading, writeAsync } = useAtst({
-    eventId: decryptedContent.eventId,
+  const { attestation, isLoading, writeAsync } = useSendAttestation({
     receiver: ethAddress,
+    eventTitle: decryptedContent.eventTitle,
   })
 
   return (

@@ -1,6 +1,6 @@
 import EventCard from '@/components/event-card'
 import Layout from '@/components/layout/layout'
-import { useAccount, useEvent } from '@/lib/hooks/use-polybase'
+import { usePBAccount, useEvent } from '@/lib/hooks/use-polybase'
 import { useStore } from '@/lib/store'
 import Button from '@mui/material/Button'
 import Divider from '@mui/material/Divider'
@@ -22,7 +22,7 @@ interface SubmitData {
 
 export default function Create() {
   const { createEvent, organizerEvents } = useEvent()
-  const { accountInfo } = useAccount()
+  const { accountInfo } = usePBAccount()
   const decryptKey = useStore((state) => state.decryptKey)
 
   return (

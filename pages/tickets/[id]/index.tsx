@@ -1,6 +1,6 @@
 import Layout from '@/components/layout/layout'
 import ScannerModal from '@/components/scanner-modal'
-import { useAccount, useEventDetail, useTicket } from '@/lib/hooks/use-polybase'
+import { usePBAccount, useEventDetail, useTicket } from '@/lib/hooks/use-polybase'
 import { useStore } from '@/lib/store'
 import formatDate from '@/lib/utils/date'
 import { asymDecrypt, asymEncrypt } from '@/lib/utils/encrypt'
@@ -25,7 +25,7 @@ export default function Home() {
   const [verifier, setVerifier] = useState<EncryptedDataSecp256k1>()
 
   const EncryptComp = () => {
-    const { accountInfo } = useAccount()
+    const { accountInfo } = usePBAccount()
 
     return (
       <>

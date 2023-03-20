@@ -11,7 +11,6 @@ type Props = {
 }
 
 export default function EventCard({ event }: Props) {
-  console.log('🚀 ~ file: event-card.tsx:19 ~ EventCard ~ event:', event)
   const { date, description, id, location, participants, title } = event.data
 
   return (

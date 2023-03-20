@@ -106,7 +106,7 @@ export default function ScannerModal() {
               const jsonData = JSON.parse(data) as TicketEncryptedData
               setDecryptedContent(jsonData)
             }}
-            onError={(error) => console.log(error?.message)}
+            onError={(error) => console.error(error?.message)}
           />
         </Box>
       </Dialog>
