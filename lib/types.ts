@@ -45,3 +45,10 @@ export interface PublicKey {
   x: string
   y: string
 }
+
+export type TicketEncryptedData = {
+  tickedId: string
+  eventId: string
+  eventTitle: string
+  address: string
+}

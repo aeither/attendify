@@ -1,7 +1,6 @@
-import { Attest } from '@/components/attest'
+import EventCard from '@/components/event-card'
 import Layout from '@/components/layout/layout'
 import { useAccount, useEvent } from '@/lib/hooks/use-polybase'
-import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Divider from '@mui/material/Divider'
 import Stack from '@mui/material/Stack'
@@ -12,7 +11,6 @@ import {
   TextFieldElement,
 } from 'react-hook-form-mui'
 import { toast } from 'sonner'
-import EventCard from '@/components/event-card'
 
 interface SubmitData {
   title: string
@@ -83,8 +81,6 @@ export default function Create() {
               </>
             ))}
         </div>
-
-        <Attest />
       </Layout>
     </>
   )

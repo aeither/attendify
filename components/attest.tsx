@@ -1,71 +1,49 @@
-// import { createKey, createValue, parseString } from '@eth-optimism/atst'
-import { useState } from 'react'
-import { useAccount, useNetwork, useWaitForTransaction } from 'wagmi'
+import { useNetwork } from 'wagmi'
 
-import { createKey, createValue, parseString } from '@/lib/utils/atst'
-import Typography from '@mui/material/Typography'
+import { useAtst } from '@/lib/hooks/use-atst'
+import { parseString } from '@/lib/utils/atst'
+import Button from '@mui/material/Button'
 import { ConnectKitButton } from 'connectkit'
-import {
-  useAttestationStationAttest,
-  useAttestationStationAttestations,
-  usePrepareAttestationStationAttest,
-} from '../generated'
 import { toast } from 'sonner'
+import { TicketEncryptedData } from '@/lib/types'
 
 type AttestProps = {
-  setDecryptedContent: (value: React.SetStateAction<string | undefined>) => void
+  setDecryptedContent: React.Dispatch<
+    React.SetStateAction<TicketEncryptedData | undefined>
+  >
+  decryptedContent: TicketEncryptedData
 }
 
 export function Attest(props: AttestProps) {
-  const { setDecryptedContent } = props
+  const { setDecryptedContent, decryptedContent } = props
 
-  const { address } = useAccount()
-  const [value, setValue] = useState('Hello world')
-
-  const key = createKey('hello-world')
-  const newAttestation = createValue(value)
-
-  const { config } = usePrepareAttestationStationAttest({
-    args: [address!, key, newAttestation],
-  })
-
-  const { data, write } = useAttestationStationAttest({
-    ...config,
-    onSuccess: () => {
-      setDecryptedContent(undefined)
-      toast.success('Success')
-    },
-  })
-
-  const { refetch, data: attestation } = useAttestationStationAttestations({
-    args: [address!, address!, key],
-  })
-
-  const { isLoading } = useWaitForTransaction({
-    hash: data?.hash,
-    onSuccess: () => refetch(),
+  const { attestation, isLoading, writeAsync } = useAtst({
+    eventId: decryptedContent.eventId,
+    receiver: decryptedContent.address as any,
   })
 
   return (
-    <div className="flex w-full flex-col gap-2">
-      <Typography gutterBottom variant="h2" component="div">
-        Attest
-      </Typography>
+    <>
       <ConnectKitButton />
-      <div>Current attestation: {attestation ? parseString(attestation) : 'none'}</div>
-      <input
-        disabled={isLoading}
-        onChange={(e) => setValue(e.target.value)}
-        value={value}
-      />
-      <button disabled={!write || isLoading} onClick={() => write?.()}>
+      <div>Last attestation: {attestation ? parseString(attestation) : 'none'}</div>
+      <Button
+        variant="contained"
+        disabled={!writeAsync || isLoading}
+        onClick={async () => {
+          await writeAsync?.()
+
+          setDecryptedContent(undefined)
+          toast.success('Success')
+        }}
+      >
         Attest
-      </button>
-      {isLoading && <ProcessingMessage hash={data?.hash} />}
+      </Button>
+
+      {/* {isLoading && <ProcessingMessage hash={data?.hash} />}
       <div>
         Gas fee: <span>{config.request?.gasLimit.toString()}</span>
-      </div>
-    </div>
+      </div> */}
+    </>
   )
 }
 

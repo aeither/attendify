@@ -1,4 +1,6 @@
+import { Attest } from '@/components/attest'
 import { useStore } from '@/lib/store'
+import { TicketEncryptedData } from '@/lib/types'
 import { asymDecrypt } from '@/lib/utils/encrypt'
 import { Close } from '@mui/icons-material'
 import { Box, Dialog, Stack, Typography } from '@mui/material'
@@ -9,11 +11,10 @@ import { TransitionProps } from '@mui/material/transitions'
 import {
   decodeFromString,
   EncryptedDataSecp256k1,
-  parseEncrypedData,
+  parseEncrypedData
 } from '@polybase/util'
 import { QrScanner } from '@yudiel/react-qr-scanner'
 import * as React from 'react'
-import { toast } from 'sonner'
 
 // TODO: tailwind not working in this component
 
@@ -27,7 +28,7 @@ const Transition = React.forwardRef(function Transition(
 })
 
 export default function ScannerModal() {
-  const [decryptedContent, setDecryptedContent] = React.useState<string>()
+  const [decryptedContent, setDecryptedContent] = React.useState<TicketEncryptedData>()
   const decryptKey = useStore((state) => state.decryptKey)
   const [open, setOpen] = React.useState(false)
   const handleOpen = () => setOpen(true)
@@ -71,25 +72,20 @@ export default function ScannerModal() {
               }}
             >
               <Stack spacing={2}>
-                <Typography>{decryptedContent}</Typography>
-                <Button
-                  variant="contained"
-                  onClick={() => {
-                    // if (result === 'decoded event id with owner key') console.log(result)
-                    // update db and attest to user address event info
-
-                    setDecryptedContent(undefined)
-                    // handleClose()
-                    toast.success('Success')
-                  }}
-                >
-                  Attest
-                </Button>
+                <Typography>ticket{decryptedContent.tickedId}</Typography>
+                <Attest
+                  setDecryptedContent={setDecryptedContent}
+                  decryptedContent={decryptedContent}
+                />
               </Stack>
             </Box>
           )}
           <QrScanner
-            containerStyle={{ height: '100%' }}
+            // viewFinder={() => {
+            //   return <>Overlay</>
+            // }}
+            containerStyle={{}}
+            videoStyle={{}}
             onDecode={async (result) => {
               if (!decryptKey) return
 
@@ -97,11 +93,12 @@ export default function ScannerModal() {
                 result,
                 'base64',
               ) as EncryptedDataSecp256k1
-              const msg = await asymDecrypt(
+              const data = await asymDecrypt(
                 decodeFromString(decryptKey, 'hex'),
                 decryptedData,
               )
-              setDecryptedContent(msg)
+              const jsonData = JSON.parse(data) as TicketEncryptedData
+              setDecryptedContent(jsonData)
             }}
             onError={(error) => console.log(error?.message)}
           />

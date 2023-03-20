@@ -10,7 +10,7 @@ import {
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { useStore } from '../store'
-import { EventData, TicketData, UserData } from '../types'
+import { TicketEncryptedData, EventData, TicketData, UserData } from '../types'
 import { nanoid } from '../utils'
 import { asymEncrypt } from '../utils/encrypt'
 
@@ -74,7 +74,7 @@ export async function getPublicKey() {
 export function useTicket() {
   const polybase = usePolybase()
   const localPubKey = useStore((state) => state.publicKey)
-  const { accountInfo } = useAccount()
+  const { accountInfo, address } = useAccount()
 
   const userTickets = useCollection<TicketData>(
     localPubKey ? polybase.collection('Ticket').where('userId', '==', localPubKey) : null,
@@ -93,9 +93,20 @@ export function useTicket() {
       throw new Error('accountInfo undefined. Sign in.')
     }
 
+    if (!address) {
+      throw new Error('address undefined. Sign in.')
+    }
+
+    const dataToBeEncrypted: TicketEncryptedData = {
+      tickedId: id,
+      eventId,
+      eventTitle,
+      address: address,
+    }
+
     const encryptedData = await asymEncrypt(
       decodeFromString(accountInfo.data.data.encryptPubKey, 'hex'),
-      id,
+      JSON.stringify(dataToBeEncrypted),
     )
 
     const res = await polybase
