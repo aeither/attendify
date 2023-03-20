@@ -3,7 +3,6 @@ export const useQuery = () => {
 }
 
 export function useMutation() {
-
   const items = ['apple', 'banana', 'pear']
 
   const addItem = () => {}

@@ -11,7 +11,7 @@ import { TransitionProps } from '@mui/material/transitions'
 import {
   decodeFromString,
   EncryptedDataSecp256k1,
-  parseEncrypedData
+  parseEncrypedData,
 } from '@polybase/util'
 import { QrScanner } from '@yudiel/react-qr-scanner'
 import * as React from 'react'
