@@ -1,10 +1,16 @@
 import Layout from '@/components/layout/layout'
 import { useAccount } from '@/lib/hooks/use-polybase'
-import { Avatar, Button, Typography } from '@mui/material'
+import { useStore } from '@/lib/store'
+import { genKeys } from '@/lib/utils/encrypt'
+import { Avatar, Button, Input, Typography } from '@mui/material'
+import { encodeToString } from '@polybase/util'
+import { useState } from 'react'
 import { FormContainer, TextFieldElement } from 'react-hook-form-mui'
 
 export default function Profile() {
-  const { updateName, deleteAccount, name, address } = useAccount()
+  const { updateName, updateEncryptPubKey, name, address } = useAccount()
+  const [encryptionPrivKey, setEncryptionPrivKey] = useState<Uint8Array>()
+  const setDecryptKey = useStore((state) => state.setDecryptKey)
 
   return (
     <>
@@ -34,6 +40,42 @@ export default function Profile() {
             </Button>
           </div>
         </FormContainer>
+
+        <Button
+          onClick={async (data) => {
+            const { publicKey, privateKey } = await genKeys()
+            setDecryptKey(privateKey)
+            setEncryptionPrivKey(privateKey)
+
+            updateEncryptPubKey(publicKey)
+          }}
+          variant="contained"
+          color="secondary"
+          type="submit"
+        >
+          Generate Encryption Key
+        </Button>
+        {encryptionPrivKey && (
+          <>
+            <Typography variant="h4">
+              Please save this encryptation private key securely. Do not share with
+              anyone.
+            </Typography>
+            <div className="flex w-full gap-2">
+              <Input
+                sx={{
+                  wordBreak: 'break-all',
+                }}
+                fullWidth
+                disabled
+                defaultValue={encodeToString(encryptionPrivKey, 'hex')}
+              />
+              {/* <IconButton>
+                <Clipboard />
+              </IconButton> */}
+            </div>
+          </>
+        )}
 
         {/* <Button onClick={() => deleteAccount()} variant="contained">
               Delete account

@@ -1,13 +1,12 @@
 import { Auth } from '@polybase/auth'
 import { ethPersonalSignRecoverPublicKey } from '@polybase/eth'
-import { usePolybase, useCollection, useRecord } from '@polybase/react'
-import { EncryptedDataSecp256k1 } from '@polybase/util'
+import { useCollection, usePolybase, useRecord } from '@polybase/react'
+import { addPublicKeyPrefix, encodeToString } from '@polybase/util'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { useStore } from '../store'
-import { EventData, EventInfo, TicketData } from '../types'
+import { EventData, TicketData } from '../types'
 import { nanoid } from '../utils'
-import { asymEncrypt, asymDecrypt, getUint8Array, genKeys } from '../utils/encrypt'
 
 const auth = typeof window !== 'undefined' ? new Auth() : null
 
@@ -39,28 +38,28 @@ export async function getPublicKey() {
  * Encrypt data
  */
 
-export function useEncrypt() {
-  const polybase = usePolybase()
-  const privateKey = useStore((state) => state.privateKey)
+// export function useEncrypt() {
+//   const polybase = usePolybase()
+//   const privateKey = useStore((state) => state.privateKey)
 
-  const encrypt = async (publicKey: string, data: string) => {
-    return await asymEncrypt(getUint8Array(publicKey), data)
-  }
+//   const encrypt = async (publicKey: string, data: string) => {
+//     return await asymEncrypt(getUint8Array(publicKey), data)
+//   }
 
-  const decrypt = async (data: EncryptedDataSecp256k1) => {
-    if (!privateKey) {
-      const { publicKey, privateKey } = await genKeys()
-      //
-      return await asymDecrypt(privateKey, data)
-    }
-    return await asymDecrypt(getUint8Array(privateKey), data)
-  }
+//   const decrypt = async (data: EncryptedDataSecp256k1) => {
+//     if (!privateKey) {
+//       const { publicKey, privateKey } = await genKeys()
+//       //
+//       return await asymDecrypt(privateKey, data)
+//     }
+//     return await asymDecrypt(getUint8Array(privateKey), data)
+//   }
 
-  return {
-    encrypt,
-    decrypt,
-  }
-}
+//   return {
+//     encrypt,
+//     decrypt,
+//   }
+// }
 
 /**
  * useTicket
@@ -118,9 +117,16 @@ export function useEvent() {
       throw new Error('PublicKey undefined. Sign in.')
     }
 
-    const res = await polybase
-      .collection('Event')
-      .create([id, title, description, date, location, publicKey, publicKey])
+    const res = await polybase.collection('Event').create([
+      id,
+      title,
+      description,
+      date,
+      location,
+      // encryptPubKey,
+      publicKey,
+      publicKey,
+    ])
     return res
   }
 
@@ -177,6 +183,22 @@ export function useAccount() {
     return res
   }
 
+  const updateEncryptPubKey = async (encryptionPubKey: Uint8Array) => {
+    const publicKey = localPubKey || (await getPublicKey())
+    if (!publicKey) return
+
+    const res = await polybase
+      .collection('User')
+      .record(publicKey)
+      .call('setEncryptPubKey', [
+        encodeToString(addPublicKeyPrefix(encryptionPubKey), 'hex'),
+      ])
+
+    // Update local user
+    setName(res.data.name)
+    return res
+  }
+
   useEffect(() => {
     if (!auth) return
 
@@ -221,6 +243,7 @@ export function useAccount() {
     signIn,
     signOut,
     updateName,
+    updateEncryptPubKey,
     deleteAccount,
   }
 }
