@@ -20,6 +20,7 @@ export interface EventData {
 
 export interface TicketData {
   id: string
+  encryptedData: string
   type: string
   price: number
   quantity: number

@@ -1,12 +1,18 @@
 import { Auth } from '@polybase/auth'
 import { ethPersonalSignRecoverPublicKey } from '@polybase/eth'
 import { useCollection, usePolybase, useRecord } from '@polybase/react'
-import { addPublicKeyPrefix, encodeToString } from '@polybase/util'
+import {
+  addPublicKeyPrefix,
+  decodeFromString,
+  encodeToString,
+  stringifyEncryptedData,
+} from '@polybase/util'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { useStore } from '../store'
 import { EventData, TicketData, UserData } from '../types'
 import { nanoid } from '../utils'
+import { asymEncrypt } from '../utils/encrypt'
 
 const auth = typeof window !== 'undefined' ? new Auth() : null
 
@@ -68,6 +74,7 @@ export async function getPublicKey() {
 export function useTicket() {
   const polybase = usePolybase()
   const localPubKey = useStore((state) => state.publicKey)
+  const { accountInfo } = useAccount()
 
   const userTickets = useCollection<TicketData>(
     localPubKey ? polybase.collection('Ticket').where('userId', '==', localPubKey) : null,
@@ -82,9 +89,27 @@ export function useTicket() {
       throw new Error('PublicKey undefined. Sign in.')
     }
 
+    if (!accountInfo.data) {
+      throw new Error('accountInfo undefined. Sign in.')
+    }
+
+    const encryptedData = await asymEncrypt(
+      decodeFromString(accountInfo.data.data.encryptPubKey, 'hex'),
+      id,
+    )
+
     const res = await polybase
       .collection('Ticket')
-      .create([id, type, price, quantity, eventTitle, eventId, publicKey])
+      .create([
+        id,
+        stringifyEncryptedData(encryptedData),
+        type,
+        price,
+        quantity,
+        eventTitle,
+        eventId,
+        publicKey,
+      ])
     return res
   }
 
@@ -117,16 +142,18 @@ export function useEvent() {
       throw new Error('PublicKey undefined. Sign in.')
     }
 
-    const res = await polybase.collection('Event').create([
-      id,
-      title,
-      description,
-      date,
-      location,
-      encryptPubKey,
-      publicKey,
-      publicKey,
-    ])
+    const res = await polybase
+      .collection('Event')
+      .create([
+        id,
+        title,
+        description,
+        date,
+        location,
+        encryptPubKey,
+        publicKey,
+        publicKey,
+      ])
     return res
   }
 

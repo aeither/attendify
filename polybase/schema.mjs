@@ -75,6 +75,7 @@ collection Event {
 @public
 collection Ticket {
   id: string;
+  encryptedData: string;
   type: string;
   price: number;
   quantity: number;
@@ -82,8 +83,9 @@ collection Ticket {
   eventId: string;
   userId: string;
 
-  constructor (id: string, type: string, price: number, quantity: number, eventTitle: string, eventId: string, userId: string) {
+  constructor (id: string, encryptedData: string, type: string, price: number, quantity: number, eventTitle: string, eventId: string, userId: string) {
     this.id = id;
+    this.encryptedData = encryptedData;
     this.type = type;
     this.price = price;
     this.quantity = quantity;

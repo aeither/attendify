@@ -5,7 +5,7 @@ const formatDate = (dateString: string) => {
   try {
     formattedDate = format(new Date(dateString), 'MMM d, yyyy. h:mm aa')
   } catch (error) {
-    const date = new Date(Number(dateString) * 1000)
+    const date = new Date(Number(dateString))
     // formattedDate = `${date.getDate()} ${date.getMonth()} ${date.getFullYear()}, ${date.getHours()}:${date.getMinutes()}`
     formattedDate = format(date, 'MMM d, yyyy. h:mm aa')
   }

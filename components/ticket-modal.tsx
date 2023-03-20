@@ -41,12 +41,12 @@ export default function TicketModal({ ticket }: TicketCardProps) {
           </Typography>
         </DialogTitle>
         <DialogContent>
-          <div className="relative flex w-24">
+          <Box sx={{ padding: 2, bgcolor: 'white', borderRadius: '16px' }}>
             <QRCode
               style={{ height: 'auto', maxWidth: '100%', width: '100%' }}
-              value={ticket.data.id}
+              value={ticket.data.encryptedData}
             />
-          </div>
+          </Box>
         </DialogContent>
       </Dialog>
     </div>
