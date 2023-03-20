@@ -10,6 +10,7 @@ export interface Block {
 export interface EventData {
   id: string
   title: string
+  encryptPubKey: string
   description: string
   date: string
   location: string

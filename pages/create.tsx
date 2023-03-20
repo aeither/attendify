@@ -1,6 +1,6 @@
 import { Attest } from '@/components/attest'
 import Layout from '@/components/layout/layout'
-import { useEvent } from '@/lib/hooks/use-polybase'
+import { useAccount, useEvent } from '@/lib/hooks/use-polybase'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Divider from '@mui/material/Divider'
@@ -23,6 +23,7 @@ interface SubmitData {
 
 export default function Create() {
   const { createEvent, organizerEvents } = useEvent()
+  const { accountInfo } = useAccount()
 
   return (
     <>
@@ -33,12 +34,13 @@ export default function Create() {
           onSuccess={(data: SubmitData, e) => {
             e?.preventDefault()
 
-            if (!data.date) return
+            if (!data.date || !accountInfo.data) return
 
             const promise = createEvent({
               title: data.title,
               description: data.description,
               date: String(new Date(data.date).getTime()),
+              encryptPubKey: accountInfo.data.data.encryptPubKey,
               location: data.location,
             })
 

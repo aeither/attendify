@@ -109,7 +109,7 @@ export function useEvent() {
   )
 
   const createEvent = async (props: Omit<EventData, 'id' | 'owner' | 'participants'>) => {
-    const { title, description, date, location } = props
+    const { title, description, encryptPubKey, date, location } = props
     const id = nanoid(16)
 
     const publicKey = localPubKey || (await getPublicKey())
@@ -123,7 +123,7 @@ export function useEvent() {
       description,
       date,
       location,
-      // encryptPubKey,
+      encryptPubKey,
       publicKey,
       publicKey,
     ])
