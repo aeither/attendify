@@ -1,15 +1,18 @@
 import Layout from '@/components/layout/layout'
 import ScannerModal from '@/components/scanner-modal'
-import { useEventDetail, useTicket } from '@/lib/hooks/use-polybase'
+import { useAccount, useEventDetail, useTicket } from '@/lib/hooks/use-polybase'
 import { useStore } from '@/lib/store'
 import formatDate from '@/lib/utils/date'
+import { asymDecrypt, asymEncrypt, genKeys } from '@/lib/utils/encrypt'
 import { AccessTime, LocationCity } from '@mui/icons-material'
 import ArrowBack from '@mui/icons-material/ArrowBack'
 import { IconButton } from '@mui/material'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
+import { decodeFromString, EncryptedDataSecp256k1 } from '@polybase/util'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
+import { useState } from 'react'
 import { toast } from 'sonner'
 
 export default function Home() {
@@ -18,6 +21,59 @@ export default function Home() {
   const { data } = useEventDetail(id)
   const { buyTicket } = useTicket()
   const localPubKey = useStore((state) => state.publicKey)
+  const decryptKey = useStore((state) => state.decryptKey)
+  const [verifier, setVerifier] = useState<EncryptedDataSecp256k1>()
+
+  const EncryptComp = () => {
+    const { accountInfo } = useAccount()
+
+    return (
+      <>
+        {data && (
+          <div className="flex gap-2">
+            <Typography variant="h2">Encrypt</Typography>
+
+            <Button
+              onClick={async () => {
+                if (!accountInfo.data) return
+
+                const encryptedData = await asymEncrypt(
+                  decodeFromString(accountInfo.data.data.encryptPubKey, 'hex'),
+                  'test hello',
+                )
+                setVerifier(encryptedData)
+                console.log(
+                  '🚀 ~ file: index.tsx:33 ~ onClick={ ~ encryptedData:',
+                  encryptedData,
+                )
+              }}
+              variant="contained"
+            >
+              Encrypt
+            </Button>
+
+            <Button
+              onClick={async () => {
+                console.log(
+                  '🚀 ~ file: index.tsx:62 ~ onClick={ ~ decryptKey:',
+                  decryptKey,
+                )
+                if (!decryptKey || !verifier) return
+                const dataInfo = await asymDecrypt(
+                  decodeFromString(decryptKey, 'hex'),
+                  verifier,
+                )
+                console.log('🚀 ~ file: index.tsx:43 ~ onClick={ ~ dataInfo:', dataInfo)
+              }}
+              variant="contained"
+            >
+              Decrypt
+            </Button>
+          </div>
+        )}
+      </>
+    )
+  }
 
   return (
     <>
@@ -47,6 +103,8 @@ export default function Home() {
             <Typography variant="body1" className=" text-slate-300">
               {data.data.description}
             </Typography>
+
+            <EncryptComp />
 
             <div className="">
               {data.data.owner === localPubKey ? (

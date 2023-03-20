@@ -44,7 +44,7 @@ export default function Profile() {
         <Button
           onClick={async (data) => {
             const { publicKey, privateKey } = await genKeys()
-            setDecryptKey(privateKey)
+            setDecryptKey(encodeToString(privateKey, 'hex'))
             setEncryptionPrivKey(privateKey)
 
             updateEncryptPubKey(publicKey)

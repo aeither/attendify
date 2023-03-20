@@ -1,10 +1,9 @@
-import { EventData, TicketData } from '@/lib/types'
+import { TicketData } from '@/lib/types'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import CardMedia from '@mui/material/CardMedia'
 import Typography from '@mui/material/Typography'
 import { CollectionRecordResponse } from '@polybase/client'
-import Link from 'next/link'
 
 export type TicketCardProps = {
   ticket: CollectionRecordResponse<TicketData>
@@ -14,7 +13,7 @@ export default function TicketCard({ ticket }: TicketCardProps) {
   const { type, price, quantity, eventId, eventTitle } = ticket.data
 
   return (
-    <Card className="flex w-full">
+    <Card className="flex w-full hover:cursor-pointer">
       <CardMedia
         component="img"
         sx={{ width: 125 }}

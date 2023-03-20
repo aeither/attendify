@@ -26,3 +26,20 @@ export interface TicketData {
   eventId: string
   userId: string
 }
+
+export interface UserData {
+  encryptPubKey: string
+  id: string
+  name: string
+  points: number
+  publicKey: PublicKey
+}
+
+export interface PublicKey {
+  alg: string
+  crv: string
+  kty: string
+  use: string
+  x: string
+  y: string
+}

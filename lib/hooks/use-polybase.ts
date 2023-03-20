@@ -5,7 +5,7 @@ import { addPublicKeyPrefix, encodeToString } from '@polybase/util'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { useStore } from '../store'
-import { EventData, TicketData } from '../types'
+import { EventData, TicketData, UserData } from '../types'
 import { nanoid } from '../utils'
 
 const auth = typeof window !== 'undefined' ? new Auth() : null
@@ -163,6 +163,10 @@ export function useAccount() {
     toast('Logged out')
   }
 
+  const accountInfo = useRecord(
+    localPubKey ? polybase.collection<UserData>('User').record(localPubKey) : null,
+  )
+
   const deleteAccount = async () => {
     const publicKey = localPubKey || (await getPublicKey())
     if (!publicKey) return
@@ -242,6 +246,7 @@ export function useAccount() {
     name,
     signIn,
     signOut,
+    accountInfo,
     updateName,
     updateEncryptPubKey,
     deleteAccount,

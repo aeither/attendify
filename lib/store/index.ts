@@ -2,8 +2,8 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
 interface State {
-  decryptKey: Uint8Array | undefined
-  setDecryptKey: (decryptKey: Uint8Array | undefined) => void
+  decryptKey: string | undefined
+  setDecryptKey: (decryptKey: string | undefined) => void
   publicKey: string | undefined
   setPublicKey: (publicKey: string | undefined) => void
   isDarkMode: boolean
