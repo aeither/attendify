@@ -3,7 +3,7 @@ import ScannerModal from '@/components/scanner-modal'
 import { useAccount, useEventDetail, useTicket } from '@/lib/hooks/use-polybase'
 import { useStore } from '@/lib/store'
 import formatDate from '@/lib/utils/date'
-import { asymDecrypt, asymEncrypt, genKeys } from '@/lib/utils/encrypt'
+import { asymDecrypt, asymEncrypt } from '@/lib/utils/encrypt'
 import { AccessTime, LocationCity } from '@mui/icons-material'
 import ArrowBack from '@mui/icons-material/ArrowBack'
 import { IconButton } from '@mui/material'
@@ -39,13 +39,10 @@ export default function Home() {
 
                 const encryptedData = await asymEncrypt(
                   decodeFromString(accountInfo.data.data.encryptPubKey, 'hex'),
-                  'test hello',
+                  'test data',
                 )
                 setVerifier(encryptedData)
-                console.log(
-                  '🚀 ~ file: index.tsx:33 ~ onClick={ ~ encryptedData:',
-                  encryptedData,
-                )
+                console.log('🚀 encryptedData:', encryptedData)
               }}
               variant="contained"
             >
@@ -54,16 +51,13 @@ export default function Home() {
 
             <Button
               onClick={async () => {
-                console.log(
-                  '🚀 ~ file: index.tsx:62 ~ onClick={ ~ decryptKey:',
-                  decryptKey,
-                )
+                console.log('🚀 decryptKey:', decryptKey)
                 if (!decryptKey || !verifier) return
                 const dataInfo = await asymDecrypt(
                   decodeFromString(decryptKey, 'hex'),
                   verifier,
                 )
-                console.log('🚀 ~ file: index.tsx:43 ~ onClick={ ~ dataInfo:', dataInfo)
+                console.log('🚀 dataInfo:', dataInfo)
               }}
               variant="contained"
             >
@@ -104,7 +98,7 @@ export default function Home() {
               {data.data.description}
             </Typography>
 
-            <EncryptComp />
+            {/* <EncryptComp /> */}
 
             {/* to be removed */}
             <Button

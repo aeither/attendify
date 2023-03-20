@@ -102,7 +102,7 @@ export function useTicket() {
       .collection('Ticket')
       .create([
         id,
-        stringifyEncryptedData(encryptedData),
+        stringifyEncryptedData(encryptedData, 'base64'),
         type,
         price,
         quantity,
