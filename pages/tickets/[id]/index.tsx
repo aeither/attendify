@@ -4,7 +4,7 @@ import { useAccount, useEventDetail, useTicket } from '@/lib/hooks/use-polybase'
 import { useStore } from '@/lib/store'
 import formatDate from '@/lib/utils/date'
 import { asymDecrypt, asymEncrypt } from '@/lib/utils/encrypt'
-import { AccessTime, LocationCity } from '@mui/icons-material'
+import { AccessTime, LocationCity, People } from '@mui/icons-material'
 import ArrowBack from '@mui/icons-material/ArrowBack'
 import { IconButton } from '@mui/material'
 import Button from '@mui/material/Button'
@@ -92,6 +92,12 @@ export default function Home() {
             <div className="flex gap-2 text-slate-300">
               <LocationCity />
               <Typography variant="subtitle1">{data.data.location}</Typography>
+            </div>
+            <div className="flex gap-2 text-slate-300">
+              <People />
+              <Typography variant="subtitle1">
+                {data.data.participants.length} Attendee(s)
+              </Typography>
             </div>
             <Typography variant="h2">About</Typography>
             <Typography variant="body1" className=" text-slate-300">

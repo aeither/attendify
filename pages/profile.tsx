@@ -2,7 +2,8 @@ import Layout from '@/components/layout/layout'
 import { useAccount } from '@/lib/hooks/use-polybase'
 import { useStore } from '@/lib/store'
 import { genKeys } from '@/lib/utils/encrypt'
-import { Avatar, Button, Input, Typography } from '@mui/material'
+import { Edit } from '@mui/icons-material'
+import { Avatar, Box, Button, Divider, Input, Stack, Typography } from '@mui/material'
 import { encodeToString } from '@polybase/util'
 import { useState } from 'react'
 import { FormContainer, TextFieldElement } from 'react-hook-form-mui'
@@ -11,6 +12,8 @@ export default function Profile() {
   const { updateName, updateEncryptPubKey, name, address } = useAccount()
   const [encryptionPrivKey, setEncryptionPrivKey] = useState<Uint8Array>()
   const setDecryptKey = useStore((state) => state.setDecryptKey)
+  const decryptKey = useStore((state) => state.decryptKey)
+  const [editMode, setEditMode] = useState(false)
 
   return (
     <>
@@ -26,22 +29,39 @@ export default function Profile() {
             </div>
           </>
         )}
-        <FormContainer
-          defaultValues={{ name: '' }}
-          onSuccess={(data) => {
-            console.log(data)
-            updateName(data.name)
-          }}
+
+        <Stack
+          className="underline"
+          onClick={() => setEditMode(!editMode)}
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+          spacing={1}
         >
-          <div className="flex w-full  flex-col gap-2 p-4">
-            <TextFieldElement name="name" label="Name" margin="normal" required />
-            <Button variant="contained" color="secondary" type="submit">
-              Save
-            </Button>
-          </div>
-        </FormContainer>
+          <Edit sx={{ width: 16, height: 16 }} />
+          <Typography>Edit Profile</Typography>
+        </Stack>
+        {editMode && (
+          <FormContainer
+            defaultValues={{ name: '' }}
+            onSuccess={(data) => {
+              console.log(data)
+              updateName(data.name)
+            }}
+          >
+            <div className="flex w-full  flex-col gap-2 p-4">
+              <TextFieldElement name="name" label="Name" margin="normal" required />
+              <Button variant="contained" color="secondary" type="submit">
+                Save
+              </Button>
+            </div>
+          </FormContainer>
+        )}
+
+        <Divider />
 
         <Button
+          fullWidth
           onClick={async (data) => {
             const { publicKey, privateKey } = await genKeys()
             setDecryptKey(encodeToString(privateKey, 'hex'))
@@ -53,8 +73,9 @@ export default function Profile() {
           color="secondary"
           type="submit"
         >
-          Generate Encryption Key
+          {!decryptKey ? 'Generate Encryption Key' : 'Regenerate Encryption Key'}
         </Button>
+
         {encryptionPrivKey && (
           <>
             <Typography variant="h4">

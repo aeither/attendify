@@ -242,7 +242,10 @@ export function useAccount() {
   }
 
   useEffect(() => {
-    if (!auth) return
+    if (!auth) {
+      setLocalPubKey(undefined)
+      return
+    }
 
     const unsub = auth.onAuthUpdate(async (authState) => {
       setAuthed(!!authState)
