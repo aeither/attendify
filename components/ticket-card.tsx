@@ -27,7 +27,7 @@ export default function TicketCard({ ticket }: TicketCardProps) {
             {eventTitle}
           </Typography>
           <Typography variant="subtitle1" color="text.secondary" component="div">
-            {eventId}
+            event{eventId}
           </Typography>
         </div>
         <Typography variant="body1" component="div">

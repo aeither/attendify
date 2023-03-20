@@ -1,4 +1,4 @@
-import { Box, Dialog } from '@mui/material'
+import { Box, Dialog, DialogContent, DialogTitle, Typography } from '@mui/material'
 import Slide from '@mui/material/Slide'
 import { TransitionProps } from '@mui/material/transitions'
 import * as React from 'react'
@@ -34,19 +34,20 @@ export default function TicketModal({ ticket }: TicketCardProps) {
           justifyContent: 'center',
         }}
       >
-        <Box
-          sx={{
-            position: 'relative',
-            height: '100%',
-          }}
-        >
-          <div className="flex w-32">
+        <DialogTitle>
+          <Typography variant="h2">{ticket.data.eventTitle}</Typography>
+          <Typography variant="subtitle2" color={'text.secondary'}>
+            ticket{ticket.data.id}
+          </Typography>
+        </DialogTitle>
+        <DialogContent>
+          <div className="relative flex w-24">
             <QRCode
               style={{ height: 'auto', maxWidth: '100%', width: '100%' }}
               value={ticket.data.id}
             />
           </div>
-        </Box>
+        </DialogContent>
       </Dialog>
     </div>
   )
