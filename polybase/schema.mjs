@@ -3,6 +3,7 @@ export const POLYBASE_SCHEMA = `
 collection User {
   id: string;
   publicKey: PublicKey;
+  encryptPubKey?: string;
   name?: string; 
   
   image?: string;
@@ -22,6 +23,13 @@ collection User {
       error('You are not the creator of this record.');
     }
     this.name = name;
+  }
+
+  function setEncryptPubKey (encryptPubKey: string) {
+    if (ctx.publicKey != this.publicKey) {
+      error('You are not the creator of this record.');
+    }
+    this.encryptPubKey = encryptPubKey;
   }
 
   function setPoints (points: number) {
@@ -48,15 +56,17 @@ collection Event {
   description: string;
   date: string;
   location: string;
+  encryptPubKey: string;
   owner: string;
   participants: string[];
 
-  constructor (id: string, title: string, description: string, date: string, location: string, owner: string, participant: string) {
+  constructor (id: string, title: string, description: string, date: string, location: string, encryptPubKey: string, owner: string, participant: string) {
     this.id = id;
     this.title = title;
     this.description = description;
     this.date = date;
     this.location = location;
+    this.encryptPubKey = encryptPubKey;
     this.owner = owner;
     this.participants = [participant];
   }
