@@ -6,6 +6,8 @@ import { useStore } from '@/lib/store'
 import { genKeys } from '@/lib/utils/encrypt'
 import { Edit } from '@mui/icons-material'
 import { Avatar, Button, Divider, Input, Stack, Typography } from '@mui/material'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
 import { encodeToString } from '@polybase/util'
 import { useState } from 'react'
 import { FormContainer, TextFieldElement } from 'react-hook-form-mui'
@@ -17,8 +19,6 @@ export default function Profile() {
   const decryptKey = useStore((state) => state.decryptKey)
   const [editMode, setEditMode] = useState(false)
   const { refetch, attestations } = useMyAttestations()
-  refetch()
-  console.log('🚀 ~ file: profile.tsx:20 ~ Profile ~ attestations:', attestations)
 
   return (
     <>
@@ -104,6 +104,19 @@ export default function Profile() {
             </div>
           </>
         )}
+
+        <Divider />
+
+        <Stack pt={4} spacing={3}>
+          <Typography gutterBottom variant="h2" component="div">
+            Attestations
+          </Typography>
+          <Card sx={{ minWidth: 275 }}>
+            <CardContent>
+              <Typography>{attestations}</Typography>
+            </CardContent>
+          </Card>
+        </Stack>
 
         {/* <Button onClick={() => deleteAccount()} variant="contained">
               Delete account
