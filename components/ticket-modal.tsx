@@ -20,7 +20,7 @@ export default function TicketModal({ ticket }: TicketCardProps) {
   const handleClose = () => setOpen(false)
 
   return (
-    <div>
+    <>
       <div className="flex w-full" onClick={handleOpen}>
         <TicketCard ticket={ticket} />
       </div>
@@ -49,6 +49,6 @@ export default function TicketModal({ ticket }: TicketCardProps) {
           </Box>
         </DialogContent>
       </Dialog>
-    </div>
+    </>
   )
 }

@@ -1,14 +1,12 @@
 import EventCard from '@/components/event-card'
 import Layout from '@/components/layout/layout'
 import { useEvent } from '@/lib/hooks/use-polybase'
-import { Button, Stack, Typography } from '@mui/material'
-import { encrypt, decrypt } from '@polybase/eth'
+import { Typography } from '@mui/material'
 
 export default function Home() {
   const { events } = useEvent()
 
   return (
-    <>
       <Layout>
         <Typography variant="h2" className="flex w-full justify-start">
           Events
@@ -22,6 +20,5 @@ export default function Home() {
             ))}
         </div>
       </Layout>
-    </>
   )
 }

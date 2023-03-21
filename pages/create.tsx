@@ -26,7 +26,6 @@ export default function Create() {
   const decryptKey = useStore((state) => state.decryptKey)
 
   return (
-    <>
       <Layout>
         <FormContainer
           FormProps={{ className: 'flex w-full flex-col' }}
@@ -91,6 +90,5 @@ export default function Create() {
             ))}
         </div>
       </Layout>
-    </>
   )
 }

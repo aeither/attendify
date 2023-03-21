@@ -21,7 +21,6 @@ export default function Profile() {
   const { refetch, attestations } = useMyAttestations()
 
   return (
-    <>
       <Layout>
         {address && name && (
           <>
@@ -122,6 +121,5 @@ export default function Profile() {
               Delete account
             </Button> */}
       </Layout>
-    </>
   )
 }

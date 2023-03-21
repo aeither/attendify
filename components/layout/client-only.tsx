@@ -12,5 +12,5 @@ export function ClientOnly({ children }: { children: React.ReactNode }) {
   // Render
   if (!hasMounted) return null
 
-  return <div>{children}</div>
+  return <>{children}</>
 }
