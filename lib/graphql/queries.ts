@@ -9,7 +9,6 @@ import {
 
 export const attestationsQuery = gql`
   query Attestations(
-    $block: Block_height
     $first: Int = 10
     $orderBy: Attestation_orderBy
     $orderDirection: OrderDirection
@@ -18,7 +17,6 @@ export const attestationsQuery = gql`
     $where: Attestation_filter
   ) {
     attestations(
-      block: $block
       first: $first
       orderBy: $orderBy
       orderDirection: $orderDirection
@@ -34,12 +32,6 @@ export const attestationsQuery = gql`
       blockNumber
       blockTimestamp
       transactionHash
-      index
-      indexForCreator
-      indexForAbout
-      indexForKey
-      indexForKeyAndCreator
-      indexForKeyAndAbout
     }
   }
 `
@@ -56,56 +48,31 @@ export function _queryAttestations(variables: AttestationsQueryVariables) {
 }
 
 interface QueryAttestationsArgs {
+  creator?: string | null
   key?: string | null
-  address?: string | null
-  count: number
-  page: number
-  rows: number
+  about?: string | null
 }
 
-export function queryAttestations({
-  key,
-  address,
-  page,
-  rows,
-  count,
-}: QueryAttestationsArgs) {
-  const offset = page * rows
-  const start = (count - offset).toString()
-
-  if (address && key) {
+export function queryAttestations({ creator, about, key }: QueryAttestationsArgs) {
+  if (creator) {
     return _queryAttestations({
-      first: rows,
       where: {
-        or: [
-          { about: address, indexForKeyAndAbout_lte: start, key },
-          { creator: address, indexForKeyAndCreator_lte: start, key },
-        ],
+        creator,
       },
     })
-  } else if (address) {
+  } else if (about) {
     return _queryAttestations({
-      first: rows,
       where: {
-        or: [
-          { about: address, indexForAbout_lte: start },
-          { creator: address, indexForCreator_lte: start },
-        ],
+        about,
       },
     })
   } else if (key) {
     return _queryAttestations({
-      first: rows,
       where: {
-        and: [{ indexForKey_lte: start }, { key }],
+        key,
       },
     })
   } else {
-    return _queryAttestations({
-      first: rows,
-      where: {
-        index_lte: start,
-      },
-    })
+    return _queryAttestations({})
   }
 }

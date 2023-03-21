@@ -1,5 +1,5 @@
 import Layout from '@/components/layout/layout'
-import { queryAttestations } from '@/lib/graphql/simple-queries'
+import { queryAttestations } from '@/lib/graphql/queries'
 import { Button, Typography } from '@mui/material'
 
 export default function Home() {
