@@ -5,38 +5,53 @@ import {
   useAttestationStationAttestations,
   usePrepareAttestationStationAttest,
 } from '@/generated'
-import { createKey, createValue, parseString } from '@/lib/utils/atst'
+import { createKey, createValue } from '@/lib/utils/atst'
+import { ApolloQueryResult } from '@apollo/client'
+import { useEffect, useState } from 'react'
+import { AttestationsQuery } from '../graphql/generated'
+import { queryAttestations } from '../graphql/queries'
 import { usePBAccount } from './use-polybase'
-
-if (!process.env.NEXT_PUBLIC_SENDER) throw new Error('NEXT_PUBLIC_SENDER not found')
-const NEXT_PUBLIC_SENDER = process.env.NEXT_PUBLIC_SENDER as `0x${string}`
 
 type AtstProps = {
   receiver: `0x${string}` | undefined
   eventTitle: string
+  eventId: string
 }
 
 export function useMyAttestations() {
-  const key = createKey('attendify')
+  // const key = createKey('attendify')
+  const [myAttestations, setMyAttestations] =
+    useState<ApolloQueryResult<AttestationsQuery>>()
   const { address } = usePBAccount()
 
-  const me = address! as `0x${string}`
+  const queryMyAtsts = async () => {
+    if (!address) {
+      return
+    }
 
-  const { refetch, data: attestations } = useAttestationStationAttestations({
-    args: [NEXT_PUBLIC_SENDER!, me!, key],
-  })
+    const attestations = await queryAttestations({
+      about: '0xb637f3242e7fc2d23a4c485cd2d5ef91d23b2de7', // TODO change to address,
+      // creator: '0x33413c433dd28c5e0a90cba7b0a6f98d3ab971fb', // TODO change to address,
+    })
+
+    setMyAttestations(attestations)
+  }
+  useEffect(() => {
+    queryMyAtsts()
+  }, [address])
 
   return {
-    attestations: attestations ? parseString(attestations) : undefined,
-    refetch,
+    data: myAttestations?.data,
+    error: myAttestations?.error,
+    loading: myAttestations?.loading,
   }
 }
 
-export function useSendAttestation({ receiver, eventTitle }: AtstProps) {
+export function useSendAttestation({ receiver, eventTitle, eventId }: AtstProps) {
   const { address: sender } = usePBAccount()
 
-  const key = createKey('attendify')
-  const newAttestation = createValue(`${receiver} attended ${eventTitle}`)
+  const key = createKey(`attendify:${eventId}`)
+  const newAttestation = createValue(`Attended ${eventTitle}`)
 
   const { config } = usePrepareAttestationStationAttest({
     args: [receiver!, key, newAttestation],

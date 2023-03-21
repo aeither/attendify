@@ -366,7 +366,6 @@ export enum _SubgraphErrorPolicy_ {
 }
 
 export type AttestationsQueryVariables = Exact<{
-  block?: InputMaybe<Block_Height>;
   first?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<Attestation_OrderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
@@ -376,4 +375,4 @@ export type AttestationsQueryVariables = Exact<{
 }>;
 
 
-export type AttestationsQuery = { __typename?: 'Query', attestations: Array<{ __typename?: 'Attestation', id: string, creator: string, about: string, key: string, val: string, blockNumber: string, blockTimestamp: string, transactionHash: string, index: string, indexForCreator: string, indexForAbout: string, indexForKey: string, indexForKeyAndCreator: string, indexForKeyAndAbout: string }> };
+export type AttestationsQuery = { __typename?: 'Query', attestations: Array<{ __typename?: 'Attestation', id: string, creator: string, about: string, key: string, val: string, blockNumber: string, blockTimestamp: string, transactionHash: string }> };

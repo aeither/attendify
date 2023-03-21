@@ -22,6 +22,7 @@ export function Attest(props: AttestProps) {
   const { attestation, isLoading, writeAsync } = useSendAttestation({
     receiver: ethAddress,
     eventTitle: decryptedContent.eventTitle,
+    eventId: decryptedContent.eventId,
   })
 
   return (
