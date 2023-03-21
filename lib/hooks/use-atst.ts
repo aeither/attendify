@@ -3,7 +3,7 @@ import { useWaitForTransaction } from 'wagmi'
 import {
   useAttestationStationAttest,
   useAttestationStationAttestations,
-  usePrepareAttestationStationAttest
+  usePrepareAttestationStationAttest,
 } from '@/generated'
 import { createKey, createValue, parseString } from '@/lib/utils/atst'
 import { usePBAccount } from './use-polybase'
@@ -20,8 +20,7 @@ export function useMyAttestations() {
   const key = createKey('attendify')
   const { address } = usePBAccount()
 
-  // TODO temp solution
-  const me = address?.slice(0, 42) as `0x${string}`
+  const me = address! as `0x${string}`
 
   const { refetch, data: attestations } = useAttestationStationAttestations({
     args: [NEXT_PUBLIC_SENDER!, me!, key],

@@ -1,11 +1,11 @@
 import { useNetwork } from 'wagmi'
 
 import { useSendAttestation } from '@/lib/hooks/use-atst'
+import { TicketEncryptedData } from '@/lib/types'
 import { parseString } from '@/lib/utils/atst'
 import Button from '@mui/material/Button'
 import { ConnectKitButton } from 'connectkit'
 import { toast } from 'sonner'
-import { TicketEncryptedData } from '@/lib/types'
 
 type AttestProps = {
   setDecryptedContent: React.Dispatch<
@@ -17,8 +17,7 @@ type AttestProps = {
 export function Attest(props: AttestProps) {
   const { setDecryptedContent, decryptedContent } = props
 
-  // TODO temp solution
-  const ethAddress = decryptedContent.address.slice(0, 42) as `0x${string}`
+  const ethAddress = decryptedContent.address as `0x${string}`
 
   const { attestation, isLoading, writeAsync } = useSendAttestation({
     receiver: ethAddress,

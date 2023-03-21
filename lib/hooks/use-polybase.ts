@@ -12,6 +12,7 @@ import { toast } from 'sonner'
 import { useStore } from '../store'
 import { TicketEncryptedData, EventData, TicketData, UserData } from '../types'
 import { nanoid } from '../utils'
+import { getAddressFromPublicKey } from '../utils/atst'
 import { asymEncrypt } from '../utils/encrypt'
 
 const auth = typeof window !== 'undefined' ? new Auth() : null
@@ -253,7 +254,12 @@ export function usePBAccount() {
       if (!authState) return
 
       // If login
-      setAddress(authState.userId)
+      if (authState.userId && authState.userId.length !== 42) {
+        const ethAddress = getAddressFromPublicKey(authState.userId)
+        setAddress(ethAddress)
+      } else {
+        setAddress(authState.userId)
+      }
       polybase.signer(async (data) => {
         return {
           h: 'eth-personal-sign',

@@ -1,9 +1,14 @@
-import { ethers } from 'ethers'
-import { toUtf8String } from 'ethers/lib/utils.js'
-
+import { decodeFromString, encodeToString } from '@polybase/util'
 import { Address } from '@wagmi/core'
-import { BigNumber } from 'ethers'
-import { hexlify, isAddress, isHexString, toUtf8Bytes } from 'ethers/lib/utils.js'
+import { BigNumber, ethers } from 'ethers'
+import {
+  hexlify,
+  isAddress,
+  isHexString,
+  toUtf8Bytes,
+  toUtf8String,
+} from 'ethers/lib/utils.js'
+import createKeccakHash from 'keccak'
 
 export type WagmiBytes = `0x${string}`
 export const createKey = (rawKey: string): WagmiBytes => {
@@ -42,4 +47,10 @@ export const createValue = (
 export const parseString = (rawAttestation: WagmiBytes): string => {
   rawAttestation = rawAttestation === '0x0' ? '0x' : rawAttestation
   return rawAttestation ? toUtf8String(rawAttestation) : ''
+}
+
+export function getAddressFromPublicKey(publicKey: string) {
+  const pkb = decodeFromString(publicKey, 'hex')
+  const hash = createKeccakHash('keccak256').update(Buffer.from(pkb)).digest()
+  return encodeToString(hash.slice(-20), 'hex')
 }
