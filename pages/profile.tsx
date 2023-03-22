@@ -3,6 +3,7 @@ import ScannerModal from '@/components/scanner-modal'
 import { useMyAttestations } from '@/lib/hooks/use-atst'
 import { usePBAccount } from '@/lib/hooks/use-polybase'
 import { useStore } from '@/lib/store'
+import { formatAddress } from '@/lib/utils'
 import { genKeys } from '@/lib/utils/encrypt'
 import { Edit } from '@mui/icons-material'
 import { Avatar, Button, Divider, Input, Stack, Typography } from '@mui/material'
@@ -113,7 +114,8 @@ export default function Profile() {
           <Card key={atst.id} sx={{ minWidth: 275 }}>
             <CardContent>
               <>
-                <Typography>{atst.transactionHash}</Typography>
+                <Typography>{atst.val}</Typography>
+                <Typography>{formatAddress(atst.transactionHash)}</Typography>
               </>
             </CardContent>
           </Card>

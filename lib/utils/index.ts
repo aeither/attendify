@@ -71,3 +71,7 @@ export const truncate = (str: string, length: number) => {
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
+
+export const formatAddress = (addy: string) => {
+  return `${addy.slice(0, 6)}...${addy.slice(-4)}`
+}
