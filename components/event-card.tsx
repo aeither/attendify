@@ -11,7 +11,7 @@ type Props = {
 }
 
 export default function EventCard({ event }: Props) {
-  const { date, description, id, location, participants, title } = event.data
+  const { date, description, id, location, participants, title, image } = event.data
 
   return (
     <>
@@ -20,7 +20,7 @@ export default function EventCard({ event }: Props) {
           <CardMedia
             component="img"
             sx={{ width: 125 }}
-            image="https://placehold.co/400"
+            image={image || 'https://placehold.co/400'}
             alt={title}
           />
           <CardContent className="flex w-full flex-col justify-between ">

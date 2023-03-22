@@ -27,6 +27,7 @@ export interface TicketData {
   quantity: number
   eventTitle: string
   eventId: string
+  image: string
   userId: string
 }
 

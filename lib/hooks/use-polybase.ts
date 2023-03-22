@@ -82,7 +82,7 @@ export function useTicket() {
   )
 
   const buyTicket = async (props: Omit<TicketData, 'id' | 'userId'>) => {
-    const { type, price, quantity, eventTitle, eventId } = props
+    const { type, price, quantity, eventTitle, eventId, image } = props
     const id = nanoid(16)
 
     const publicKey = localPubKey || (await getPublicKey())
@@ -120,6 +120,7 @@ export function useTicket() {
         quantity,
         eventTitle,
         eventId,
+        image,
         publicKey,
       ])
     return res

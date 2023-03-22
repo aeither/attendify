@@ -79,8 +79,8 @@ export default function Home() {
           <div className="flex w-full flex-col gap-2">
             <div className="relative h-56 w-full">
               <Image
-                src="https://placehold.co/400"
-                alt=""
+                src={data.data.image}
+                alt={data.data.title}
                 fill
                 className="object-cover"
               />
@@ -117,6 +117,7 @@ export default function Home() {
                   price: 0,
                   eventTitle: data.data.title,
                   eventId: data.data.id,
+                  image: data.data.image,
                 })
                 toast.success('Ticked purchased successfully!')
                 router.push('/tickets')

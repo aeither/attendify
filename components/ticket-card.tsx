@@ -10,14 +10,14 @@ export type TicketCardProps = {
 }
 
 export default function TicketCard({ ticket }: TicketCardProps) {
-  const { type, price, quantity, eventId, eventTitle } = ticket.data
+  const { type, price, quantity, eventId, eventTitle, image } = ticket.data
 
   return (
     <Card className="flex w-full hover:cursor-pointer">
       <CardMedia
         component="img"
         sx={{ width: 125 }}
-        image="https://placehold.co/400"
+        image={image || 'https://placehold.co/400'}
         alt={eventTitle}
       />
       <CardContent className="flex w-full flex-col justify-between ">

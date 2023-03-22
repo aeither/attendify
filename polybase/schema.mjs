@@ -83,9 +83,10 @@ collection Ticket {
   quantity: number;
   eventTitle: string;
   eventId: string;
+  image: string;
   userId: string;
 
-  constructor (id: string, encryptedData: string, type: string, price: number, quantity: number, eventTitle: string, eventId: string, userId: string) {
+  constructor (id: string, encryptedData: string, type: string, price: number, quantity: number, eventTitle: string, eventId: string, image: string, userId: string) {
     this.id = id;
     this.encryptedData = encryptedData;
     this.type = type;
@@ -93,6 +94,7 @@ collection Ticket {
     this.quantity = quantity;
     this.eventTitle = eventTitle;
     this.eventId = eventId;
+    this.image = image;
     this.userId = userId;
   }
 }
