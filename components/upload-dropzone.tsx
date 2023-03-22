@@ -31,11 +31,11 @@ export function UploadDropzone({ className, ...props }: UploadMusicProps) {
         <Image alt={'uploaded image'} width={40} height={40} src={hasImage} />
       ) : (
         <div
-          className="rounded border border-dashed border-slate-500 p-4 hover:cursor-pointer"
+          className="rounded border border-dashed border-neutral-500 p-4 hover:cursor-pointer"
           {...getRootProps()}
         >
           <input {...getInputProps()} disabled={isLoading} />
-          <p className="text-slate-500">
+          <p className="text-neutral-500">
             {isLoading ? 'Uploading...' : 'Select or drop your image here to upload it to IPFS'}
           </p>
         </div>

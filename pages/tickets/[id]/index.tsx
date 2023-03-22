@@ -85,22 +85,22 @@ export default function Home() {
                 className="object-cover"
               />
             </div>
-            <div className="flex gap-2 text-slate-300">
+            <div className="flex gap-2 text-neutral-300">
               <AccessTime />
               <Typography variant="subtitle1">{formatDate(data.data.date)}</Typography>
             </div>
-            <div className="flex gap-2 text-slate-300">
+            <div className="flex gap-2 text-neutral-300">
               <LocationCity />
               <Typography variant="subtitle1">{data.data.location}</Typography>
             </div>
-            <div className="flex gap-2 text-slate-300">
+            <div className="flex gap-2 text-neutral-300">
               <People />
               <Typography variant="subtitle1">
                 {data.data.participants.length} Attendee(s)
               </Typography>
             </div>
             <Typography variant="h2">About</Typography>
-            <Typography variant="body1" className=" text-slate-300">
+            <Typography variant="body1" className=" text-neutral-300">
               {data.data.description}
             </Typography>
 
