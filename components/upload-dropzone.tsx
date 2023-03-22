@@ -10,7 +10,7 @@ interface UploadMusicProps extends React.HTMLAttributes<HTMLDivElement> {}
 export function UploadDropzone({ className, ...props }: UploadMusicProps) {
   const storage = new ThirdwebStorage()
   const { mutateAsync: upload, isLoading } = useStorageUpload()
-  const {watch, setValue } = useFormContext()
+  const { watch, setValue } = useFormContext()
   const hasImage = watch('image') // you can supply default value as second argument
 
   const onDrop = React.useCallback(
@@ -31,12 +31,12 @@ export function UploadDropzone({ className, ...props }: UploadMusicProps) {
         <Image alt={'uploaded image'} width={40} height={40} src={hasImage} />
       ) : (
         <div
-          className="rounded border border-dashed border-slate-500 p-4"
+          className="rounded border border-dashed border-slate-500 p-4 hover:cursor-pointer"
           {...getRootProps()}
         >
           <input {...getInputProps()} disabled={isLoading} />
           <p className="text-slate-500">
-            {isLoading ? 'Uploading...' : 'Drop image here to upload them to IPFS'}
+            {isLoading ? 'Uploading...' : 'Select or drop your image here to upload it to IPFS'}
           </p>
         </div>
       )}

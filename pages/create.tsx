@@ -19,7 +19,7 @@ interface SubmitData {
   description: string
   date: Date | null
   location: string
-  image: File
+  image: string
 }
 
 export default function Create() {
@@ -40,32 +40,32 @@ export default function Create() {
         }}
         onSuccess={(data: SubmitData, e) => {
           e?.preventDefault()
-          console.log('🚀 ~ file: create.tsx:101 ~ Create ~ data:', data)
 
           if (!data.date || !accountInfo.data) return
 
-          // const promise = createEvent({
-          //   title: data.title,
-          //   description: data.description,
-          //   date: String(new Date(data.date).getTime()),
-          //   encryptPubKey: accountInfo.data.data.encryptPubKey,
-          //   location: data.location,
-          // })
+          const promise = createEvent({
+            title: data.title,
+            description: data.description,
+            image: data.image,
+            date: String(new Date(data.date).getTime()),
+            encryptPubKey: accountInfo.data.data.encryptPubKey,
+            location: data.location,
+          })
 
-          // toast.promise(promise, {
-          //   loading: 'Loading',
-          //   success: 'Success',
-          //   error: (err) => `${err}`,
-          // })
+          toast.promise(promise, {
+            loading: 'Loading',
+            success: 'Success',
+            error: (err) => `${err}`,
+          })
         }}
       >
         <Stack spacing={3}>
           <Typography gutterBottom variant="h2" component="div">
             Create new Event
           </Typography>
-          
+
           <UploadDropzone />
-          
+
           {!decryptKey && (
             <Typography gutterBottom variant="body2" component="div">
               Make sure to have generated a encryption keypair first in the profile page.

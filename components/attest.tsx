@@ -28,7 +28,7 @@ export function Attest(props: AttestProps) {
   return (
     <>
       <ConnectKitButton />
-      <div>Last attestation: {attestation ? parseString(attestation) : 'none'}</div>
+      {/* <div>Last attestation: {attestation ? parseString(attestation) : 'none'}</div> */}
       <Button
         variant="contained"
         disabled={!writeAsync || isLoading}

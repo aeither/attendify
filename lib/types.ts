@@ -12,6 +12,7 @@ export interface EventData {
   title: string
   encryptPubKey: string
   description: string
+  image: string
   date: string
   location: string
   owner: string

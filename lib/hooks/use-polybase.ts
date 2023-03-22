@@ -10,7 +10,7 @@ import {
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { useStore } from '../store'
-import { TicketEncryptedData, EventData, TicketData, UserData } from '../types'
+import { EventData, TicketData, TicketEncryptedData, UserData } from '../types'
 import { nanoid } from '../utils'
 import { getAddressFromPublicKey } from '../utils/atst'
 import { asymEncrypt } from '../utils/encrypt'
@@ -146,7 +146,7 @@ export function useEvent() {
   )
 
   const createEvent = async (props: Omit<EventData, 'id' | 'owner' | 'participants'>) => {
-    const { title, description, encryptPubKey, date, location } = props
+    const { title, description, encryptPubKey, date, location, image } = props
     const id = nanoid(16)
 
     const publicKey = localPubKey || (await getPublicKey())
@@ -160,6 +160,7 @@ export function useEvent() {
         id,
         title,
         description,
+        image,
         date,
         location,
         encryptPubKey,
