@@ -22,6 +22,7 @@ import { optimism, optimismGoerli } from 'wagmi/chains'
 // import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
+import { ThirdwebProvider } from '@thirdweb-dev/react'
 
 const polybase = new Polybase({
   defaultNamespace: 'test-one',
@@ -56,28 +57,30 @@ function MyApp({ Component, pageProps: { ...pageProps } }: AppProps) {
   const themeMode = isDarkMode ? 'dark' : 'light'
 
   return (
-    <SafeThemeProvider mode={themeMode}>
-      {(safeTheme: Theme) => (
-        <ThemeProvider theme={safeTheme}>
-          <PolybaseProvider polybase={polybase}>
-            <WagmiConfig client={client}>
-              <ConnectKitProvider theme="midnight">
-                <RWBProvider>
-                  <ClientOnly>
-                    <LocalizationProvider dateAdapter={AdapterDateFns}>
-                      <Toaster position="top-center" richColors theme="dark" />
-                      <CssBaseline />
-                      <Component {...pageProps} />
-                    </LocalizationProvider>
-                  </ClientOnly>
-                </RWBProvider>
-              </ConnectKitProvider>
-            </WagmiConfig>
-            <Analytics />
-          </PolybaseProvider>
-        </ThemeProvider>
-      )}
-    </SafeThemeProvider>
+    <ThirdwebProvider activeChain="optimism">
+      <SafeThemeProvider mode={themeMode}>
+        {(safeTheme: Theme) => (
+          <ThemeProvider theme={safeTheme}>
+            <PolybaseProvider polybase={polybase}>
+              <WagmiConfig client={client}>
+                <ConnectKitProvider theme="midnight">
+                  <RWBProvider>
+                    <ClientOnly>
+                      <LocalizationProvider dateAdapter={AdapterDateFns}>
+                        <Toaster position="top-center" richColors theme="dark" />
+                        <CssBaseline />
+                        <Component {...pageProps} />
+                      </LocalizationProvider>
+                    </ClientOnly>
+                  </RWBProvider>
+                </ConnectKitProvider>
+              </WagmiConfig>
+              <Analytics />
+            </PolybaseProvider>
+          </ThemeProvider>
+        )}
+      </SafeThemeProvider>
+    </ThirdwebProvider>
   )
 }
 
