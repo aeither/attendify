@@ -8,9 +8,11 @@ export const nanoid = customAlphabet(
   7,
 ) // 7-character random string
 
-export const timeAgo = (timestamp: Date, timeOnly?: boolean): string => {
+export const timeAgo = (timestamp: string, timeOnly?: boolean): string => {
   if (!timestamp) return 'never'
-  return `${ms(Date.now() - new Date(timestamp).getTime())}${timeOnly ? '' : ' ago'}`
+
+  const date = new Date(parseInt(timestamp) * 1000)
+  return `${ms(Date.now() - date.getTime())}${timeOnly ? '' : ' ago'}`
 }
 
 export async function fetcher<JSON = any>(

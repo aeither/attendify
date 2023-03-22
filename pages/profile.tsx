@@ -1,3 +1,4 @@
+import AttestationTabs from '@/components/attestation-tabs'
 import Layout from '@/components/layout/layout'
 import ScannerModal from '@/components/scanner-modal'
 import { useMyAttestations } from '@/lib/hooks/use-atst'
@@ -19,48 +20,47 @@ export default function Profile() {
   const setDecryptKey = useStore((state) => state.setDecryptKey)
   const decryptKey = useStore((state) => state.decryptKey)
   const [editMode, setEditMode] = useState(false)
-  const { data } = useMyAttestations()
 
   return (
     <Layout>
       {address && name && (
         <>
-          <div className="flex w-full flex-col gap-2 p-4">
+          <div className="flex w-full flex-col gap-2 rounded-lg bg-neutral-800 p-4 ">
             <Avatar src="" className="mt-8" sx={{ width: 56, height: 56 }} />
             <Typography variant="h2">{name}</Typography>
             <Typography variant="body1" color={'text.secondary'}>
               {address.slice(0, 4) + '...' + address.slice(-4)}
             </Typography>
+
+            <Stack
+              className="underline"
+              onClick={() => setEditMode(!editMode)}
+              direction="row"
+              justifyContent="start"
+              alignItems="center"
+              spacing={1}
+            >
+              <Edit sx={{ width: 16, height: 16 }} />
+              <Typography>Edit Profile</Typography>
+            </Stack>
+            {editMode && (
+              <FormContainer
+                defaultValues={{ name: '' }}
+                onSuccess={(data) => {
+                  console.log(data)
+                  updateName(data.name)
+                }}
+              >
+                <div className="flex w-full  flex-col gap-2 p-4">
+                  <TextFieldElement name="name" label="Name" margin="normal" required />
+                  <Button variant="contained" color="secondary" type="submit">
+                    Save
+                  </Button>
+                </div>
+              </FormContainer>
+            )}
           </div>
         </>
-      )}
-
-      <Stack
-        className="underline"
-        onClick={() => setEditMode(!editMode)}
-        direction="row"
-        justifyContent="center"
-        alignItems="center"
-        spacing={1}
-      >
-        <Edit sx={{ width: 16, height: 16 }} />
-        <Typography>Edit Profile</Typography>
-      </Stack>
-      {editMode && (
-        <FormContainer
-          defaultValues={{ name: '' }}
-          onSuccess={(data) => {
-            console.log(data)
-            updateName(data.name)
-          }}
-        >
-          <div className="flex w-full  flex-col gap-2 p-4">
-            <TextFieldElement name="name" label="Name" margin="normal" required />
-            <Button variant="contained" color="secondary" type="submit">
-              Save
-            </Button>
-          </div>
-        </FormContainer>
       )}
 
       <ScannerModal />
@@ -106,21 +106,7 @@ export default function Profile() {
 
       <Divider />
 
-      <Stack pt={4} spacing={3}>
-        <Typography gutterBottom variant="h2" component="div">
-          Attestations
-        </Typography>
-        {data?.attestations.map((atst) => (
-          <Card key={atst.id} sx={{ minWidth: 275 }}>
-            <CardContent>
-              <>
-                <Typography>{atst.val}</Typography>
-                <Typography>{formatAddress(atst.transactionHash)}</Typography>
-              </>
-            </CardContent>
-          </Card>
-        ))}
-      </Stack>
+      <AttestationTabs />
 
       {/* <Button onClick={() => deleteAccount()} variant="contained">
               Delete account
