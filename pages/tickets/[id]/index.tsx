@@ -104,7 +104,7 @@ export default function Home() {
                   variant="contained"
                   className=""
                   onClick={async () => {
-                    await buyTicket({
+                    const res = await buyTicket({
                       type: 'general',
                       encryptedData: 'test data',
                       quantity: 1,
@@ -113,8 +113,10 @@ export default function Home() {
                       eventId: data.data.id,
                       image: data.data.image,
                     })
-                    toast.success('Ticked purchased successfully!')
-                    router.push('/tickets')
+                    if (res) {
+                      toast.success('Ticked purchased successfully!')
+                      router.push('/tickets')
+                    }
                   }}
                 >
                   Buy Ticket

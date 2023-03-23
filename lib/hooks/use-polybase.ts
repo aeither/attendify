@@ -95,7 +95,8 @@ export function useTicket() {
     }
 
     if (!address) {
-      throw new Error('address undefined. Sign in.')
+      toast.error('Please sign in first to purchase the ticket.')
+      return
     }
 
     const dataToBeEncrypted: TicketEncryptedData = {
@@ -123,6 +124,7 @@ export function useTicket() {
         image,
         publicKey,
       ])
+
     return res
   }
 
