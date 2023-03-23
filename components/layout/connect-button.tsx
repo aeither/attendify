@@ -25,8 +25,9 @@ export default function ConnectButton() {
         <>
           <Button
             id="basic-button"
-            variant="text"
+            variant="outlined"
             color="secondary"
+            className="rounded-full py-2"
             aria-controls={open ? 'basic-menu' : undefined}
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
@@ -60,7 +61,11 @@ export default function ConnectButton() {
           </Menu>
         </>
       ) : (
-        <Button onClick={signIn} variant="contained">
+        <Button
+          onClick={signIn}
+          variant="contained"
+          className="rounded-full py-2 shadow-md shadow-green-500"
+        >
           Login
         </Button>
       )}
