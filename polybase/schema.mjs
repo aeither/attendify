@@ -33,16 +33,16 @@ collection User {
   }
 
   function setPoints (points: number) {
-    if (ctx.publicKey != '0x000000000') {
-      error('You are not allowed to update the points.');
+    if (this.publicKey != ctx.publicKey) {
+       throw error('invalid user');
     }
     this.points = points;
   }
   
   del(){
-    // if (ctx.publicKey.toHex() != this.publicKey) {
-    //   error('You are not the owner');
-    // }
+    if (ctx.publicKey != this.publicKey) {
+      error('You are not the owner');
+    }
     selfdestruct();
   }
 
@@ -50,7 +50,7 @@ collection User {
 }
 
 @public
-collection Event {
+collection Event {  
   id: string;
   title: string;
   description: string;
@@ -71,6 +71,10 @@ collection Event {
     this.encryptPubKey = encryptPubKey;
     this.owner = owner;
     this.participants = [participant];
+  }
+
+  function joinEvent (participant: string) {
+    this.participants.push(participant);
   }
 }
 

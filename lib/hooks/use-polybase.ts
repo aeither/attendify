@@ -111,6 +111,7 @@ export function useTicket() {
       JSON.stringify(dataToBeEncrypted),
     )
 
+    await polybase.collection('Event').record(eventId).call('joinEvent', [publicKey])
     const res = await polybase
       .collection('Ticket')
       .create([
@@ -124,7 +125,6 @@ export function useTicket() {
         image,
         publicKey,
       ])
-
     return res
   }
 

@@ -45,17 +45,13 @@ export default function ConnectButton() {
             }}
           >
             <MenuItem onClick={() => copyToClipboard(address)}>
-              {hasCopied ? (
-                <div className="flex items-center justify-center gap-2">
-                  Copy address
-                  <CheckCircleOutline fontSize="small" />
-                </div>
-              ) : (
-                <div className="flex items-center justify-center gap-2">
-                  Copy address
-                  <ContentCopy fontSize="small" />
-                </div>
-              )}
+              <div className="flex items-center justify-center gap-2">
+                {hasCopied ? (
+                  <div className="pr-2">Address copied</div>
+                ) : (
+                  <div className="pr-2">Copy address</div>
+                )}
+              </div>
             </MenuItem>
             <MenuItem onClick={signOut}>Logout</MenuItem>
           </Menu>
