@@ -1,73 +1,50 @@
 import Layout from '@/components/layout/layout'
-import ScannerModal from '@/components/scanner-modal'
-import { usePBAccount, useEventDetail, useTicket } from '@/lib/hooks/use-polybase'
-import { useStore } from '@/lib/store'
+import { useEventDetail, useTicket } from '@/lib/hooks/use-polybase'
+import { formatAddress } from '@/lib/utils'
 import formatDate from '@/lib/utils/date'
-import { asymDecrypt, asymEncrypt } from '@/lib/utils/encrypt'
 import { AccessTime, LocationCity, People } from '@mui/icons-material'
 import ArrowBack from '@mui/icons-material/ArrowBack'
-import { IconButton } from '@mui/material'
+import { Avatar, Badge, Chip, IconButton } from '@mui/material'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
-import { decodeFromString, EncryptedDataSecp256k1 } from '@polybase/util'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
 import { toast } from 'sonner'
+
+function stringToColor(string: string) {
+  let hash = 0
+  let i
+
+  /* eslint-disable no-bitwise */
+  for (i = 0; i < string.length; i += 1) {
+    hash = string.charCodeAt(i) + ((hash << 5) - hash)
+  }
+
+  let color = '#'
+
+  for (i = 0; i < 3; i += 1) {
+    const value = (hash >> (i * 8)) & 0xff
+    color += `00${value.toString(16)}`.slice(-2)
+  }
+  /* eslint-enable no-bitwise */
+
+  return color
+}
+
+function stringAvatar(name: string) {
+  return {
+    sx: {
+      bgcolor: stringToColor(name),
+    },
+    children: `${name.split(' ')[0][0]}`,
+  }
+}
 
 export default function Home() {
   const router = useRouter()
   const { id } = router.query
   const { data } = useEventDetail(id)
   const { buyTicket } = useTicket()
-  const localPubKey = useStore((state) => state.publicKey)
-  const decryptKey = useStore((state) => state.decryptKey)
-  const [verifier, setVerifier] = useState<EncryptedDataSecp256k1>()
-
-  const EncryptComp = () => {
-    const { accountInfo } = usePBAccount()
-
-    return (
-      <>
-        {data && (
-          <div className="flex gap-2">
-            <Typography variant="h2">Encrypt</Typography>
-
-            <Button
-              onClick={async () => {
-                if (!accountInfo.data) return
-
-                const encryptedData = await asymEncrypt(
-                  decodeFromString(accountInfo.data.data.encryptPubKey, 'hex'),
-                  'test data',
-                )
-                setVerifier(encryptedData)
-                console.log('🚀 encryptedData:', encryptedData)
-              }}
-              variant="contained"
-            >
-              Encrypt
-            </Button>
-
-            <Button
-              onClick={async () => {
-                console.log('🚀 decryptKey:', decryptKey)
-                if (!decryptKey || !verifier) return
-                const dataInfo = await asymDecrypt(
-                  decodeFromString(decryptKey, 'hex'),
-                  verifier,
-                )
-                console.log('🚀 dataInfo:', dataInfo)
-              }}
-              variant="contained"
-            >
-              Decrypt
-            </Button>
-          </div>
-        )}
-      </>
-    )
-  }
 
   return (
     <>
@@ -76,14 +53,27 @@ export default function Home() {
           <ArrowBack />
         </IconButton>
         {data && (
-          <div className="flex w-full flex-col gap-2">
+          <div className="flex w-full flex-col gap-4">
             <div className="relative h-56 w-full">
               <Image
                 src={data.data.image}
                 alt={data.data.title}
                 fill
-                className="object-cover"
+                className="rounded-lg object-cover"
               />
+            </div>
+            <Chip label="Free" />
+            <Typography variant="h2">{data.data.title}</Typography>
+            <div className="flex w-full items-center py-2">
+              <Avatar {...stringAvatar(data.data.owner)} />
+              <div className="flex flex-col pl-4">
+                <Typography variant="subtitle2" color={'text.secondary'}>
+                  Created by
+                </Typography>{' '}
+                <Typography variant="body1" className="font-bold">
+                  {formatAddress(data.data.owner)}
+                </Typography>
+              </div>
             </div>
             <div className="flex gap-2 text-neutral-300">
               <AccessTime />
@@ -99,32 +89,38 @@ export default function Home() {
                 {data.data.participants.length} Attendee(s)
               </Typography>
             </div>
-            <Typography variant="h2">About</Typography>
-            <Typography variant="body1" className=" text-neutral-300">
-              {data.data.description}
-            </Typography>
 
-            {/* <EncryptComp /> */}
+            <div className="flex flex-col gap-2 pb-16">
+              <Typography variant="h3">About</Typography>
+              <Typography variant="body1" className="text-neutral-300">
+                {data.data.description}
+              </Typography>
+            </div>
 
-            {/* to be removed */}
-            <Button
-              variant="contained"
-              onClick={async () => {
-                await buyTicket({
-                  type: 'general',
-                  encryptedData: 'test data',
-                  quantity: 1,
-                  price: 0,
-                  eventTitle: data.data.title,
-                  eventId: data.data.id,
-                  image: data.data.image,
-                })
-                toast.success('Ticked purchased successfully!')
-                router.push('/tickets')
-              }}
-            >
-              Buy Ticket
-            </Button>
+            <div className="fixed bottom-16 left-0 right-0 w-full">
+              <div className="px-4">
+                <Button
+                  fullWidth
+                  variant="contained"
+                  className=""
+                  onClick={async () => {
+                    await buyTicket({
+                      type: 'general',
+                      encryptedData: 'test data',
+                      quantity: 1,
+                      price: 0,
+                      eventTitle: data.data.title,
+                      eventId: data.data.id,
+                      image: data.data.image,
+                    })
+                    toast.success('Ticked purchased successfully!')
+                    router.push('/tickets')
+                  }}
+                >
+                  Buy Ticket
+                </Button>{' '}
+              </div>
+            </div>
           </div>
         )}
       </Layout>
