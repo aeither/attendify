@@ -7,18 +7,18 @@ export default function Home() {
   const { events } = useEvent()
 
   return (
-      <Layout>
-        <Typography variant="h2" className="flex w-full justify-start">
-          Events
-        </Typography>
-        <div className="flex w-full flex-col gap-2">
-          {events &&
-            events.map((event) => (
-              <>
-                <EventCard event={event} />
-              </>
-            ))}
-        </div>
-      </Layout>
+    <Layout>
+      <Typography variant="h2" className="flex w-full justify-start">
+        Featured Events
+      </Typography>
+      <div className="flex w-full flex-col gap-2">
+        {events &&
+          events.map((event) => (
+            <>
+              <EventCard event={event} />
+            </>
+          ))}
+      </div>
+    </Layout>
   )
 }

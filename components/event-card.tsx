@@ -1,4 +1,6 @@
 import { EventData } from '@/lib/types'
+import formatDate from '@/lib/utils/date'
+import { People } from '@mui/icons-material'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import CardMedia from '@mui/material/CardMedia'
@@ -25,16 +27,22 @@ export default function EventCard({ event }: Props) {
           />
           <CardContent className="flex w-full flex-col justify-between ">
             <div>
-              <Typography component="div" variant="h5">
+              <Typography variant="subtitle1" color="primary">
+                {formatDate(date)}
+              </Typography>
+              <Typography component="div" variant="h3" className="font-bold">
                 {title}
               </Typography>
-              <Typography variant="subtitle1" color="text.secondary" component="div">
+              <Typography variant="body1" color="text.secondary" component="div">
                 {location}
               </Typography>
             </div>
-            <Typography variant="body1" component="div">
-              {location}
-            </Typography>
+            <div className="flex items-end gap-2 text-neutral-300">
+              <People className="text-md" />
+              <Typography variant="body1" component="div" className="pt-4">
+                {participants.length} Participant(s)
+              </Typography>
+            </div>
           </CardContent>
         </Card>
       </Link>
