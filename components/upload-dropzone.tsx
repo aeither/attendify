@@ -1,3 +1,4 @@
+import Button from '@mui/material/Button'
 import { useStorageUpload } from '@thirdweb-dev/react'
 import { ThirdwebStorage } from '@thirdweb-dev/storage'
 import Image from 'next/image'
@@ -10,7 +11,7 @@ interface UploadMusicProps extends React.HTMLAttributes<HTMLDivElement> {}
 export function UploadDropzone({ className, ...props }: UploadMusicProps) {
   const storage = new ThirdwebStorage()
   const { mutateAsync: upload, isLoading } = useStorageUpload()
-  const { watch, setValue } = useFormContext()
+  const { watch, setValue, unregister } = useFormContext()
   const hasImage = watch('image') // you can supply default value as second argument
 
   const onDrop = React.useCallback(
@@ -28,7 +29,16 @@ export function UploadDropzone({ className, ...props }: UploadMusicProps) {
   return (
     <>
       {hasImage ? (
-        <Image alt={'uploaded image'} width={40} height={40} src={hasImage} />
+        <div className="flex items-center gap-2">
+          <Image className='rounded-lg' alt={'uploaded image'} width={120} height={120} src={hasImage} />
+          <Button
+            onClick={() => {
+              setValue('image', undefined)
+            }}
+          >
+            Remove Image
+          </Button>
+        </div>
       ) : (
         <div
           className="rounded border border-dashed border-neutral-500 p-4 hover:cursor-pointer"
@@ -36,7 +46,9 @@ export function UploadDropzone({ className, ...props }: UploadMusicProps) {
         >
           <input {...getInputProps()} disabled={isLoading} />
           <p className="text-neutral-500">
-            {isLoading ? 'Uploading...' : 'Select or drop your image here to upload it to IPFS'}
+            {isLoading
+              ? 'Uploading...'
+              : 'Select or drop your image here to upload it to IPFS'}
           </p>
         </div>
       )}
