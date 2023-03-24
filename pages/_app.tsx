@@ -23,6 +23,7 @@ import { optimism, optimismGoerli } from 'wagmi/chains'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { ThirdwebProvider } from '@thirdweb-dev/react'
+import Head from 'next/head'
 
 const polybase = new Polybase({
   defaultNamespace: 'test-one',
@@ -67,6 +68,14 @@ function MyApp({ Component, pageProps: { ...pageProps } }: AppProps) {
                   <RWBProvider>
                     <ClientOnly>
                       <LocalizationProvider dateAdapter={AdapterDateFns}>
+                        <Head>
+                          <meta
+                            name="viewport"
+                            content="width=device-width,initial-scale=1, user-scalable=no"
+                          />
+                          <link rel="manifest" href="/manifest.json" />
+                          <link rel="apple-touch-icon" href="/icon.png"></link>
+                        </Head>
                         <Toaster position="top-center" richColors theme="dark" />
                         <CssBaseline />
                         <Component {...pageProps} />

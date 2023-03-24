@@ -1,3 +1,8 @@
+import NextPWA from 'next-pwa'
+
+const inDevelopment = process.env.NODE_ENV === 'development'
+const withPWA = NextPWA({ dest: 'public', disable: inDevelopment })
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -6,5 +11,4 @@ const nextConfig = {
     domains: ['lh3.googleusercontent.com', 'placehold.co', 'gateway.ipfscdn.io'],
   },
 }
-
-module.exports = nextConfig
+export default withPWA(nextConfig)
