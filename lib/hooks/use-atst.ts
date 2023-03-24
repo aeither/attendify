@@ -18,11 +18,10 @@ type AtstProps = {
   eventId: string
 }
 
-export function useMyAttestations() {
+export function useReceivedAttestations(address: string | string[] | null | undefined) {
   // const key = createKey('attendify')
   const [myAttestations, setMyAttestations] =
     useState<ApolloQueryResult<AttestationsQuery>>()
-  const { address } = usePBAccount()
 
   const queryMyAtsts = async () => {
     if (!address) {
@@ -46,11 +45,10 @@ export function useMyAttestations() {
   }
 }
 
-export function useGivenAttestations() {
+export function useGivenAttestations(address: string | string[] | null | undefined) {
   // const key = createKey('attendify')
   const [myAttestations, setMyAttestations] =
     useState<ApolloQueryResult<AttestationsQuery>>()
-  const { address } = usePBAccount()
 
   const queryMyAtsts = async () => {
     if (!address) {

@@ -1,15 +1,12 @@
 import AttestationTabs from '@/components/attestation-tabs'
 import Layout from '@/components/layout/layout'
 import ScannerModal from '@/components/scanner-modal'
-import { useMyAttestations } from '@/lib/hooks/use-atst'
+import { useGivenAttestations, useReceivedAttestations } from '@/lib/hooks/use-atst'
 import { usePBAccount } from '@/lib/hooks/use-polybase'
 import { useStore } from '@/lib/store'
-import { formatAddress } from '@/lib/utils'
 import { genKeys } from '@/lib/utils/encrypt'
 import { Edit } from '@mui/icons-material'
 import { Avatar, Button, Divider, Input, Stack, Typography } from '@mui/material'
-import Card from '@mui/material/Card'
-import CardContent from '@mui/material/CardContent'
 import { encodeToString } from '@polybase/util'
 import { useState } from 'react'
 import { FormContainer, TextFieldElement } from 'react-hook-form-mui'
@@ -20,6 +17,9 @@ export default function Profile() {
   const setDecryptKey = useStore((state) => state.setDecryptKey)
   const decryptKey = useStore((state) => state.decryptKey)
   const [editMode, setEditMode] = useState(false)
+
+  const { data: recievedAts } = useReceivedAttestations(address)
+  const { data: givenAts } = useGivenAttestations(address)
 
   return (
     <Layout>
@@ -106,7 +106,7 @@ export default function Profile() {
 
       <Divider />
 
-      <AttestationTabs />
+      <AttestationTabs givenAts={givenAts} recievedAts={recievedAts} />
 
       {/* <Button onClick={() => deleteAccount()} variant="contained">
               Delete account

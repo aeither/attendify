@@ -1,4 +1,4 @@
-import { useMyAttestations, useGivenAttestations } from '@/lib/hooks/use-atst'
+import { AttestationsQuery } from '@/lib/graphql/generated'
 import { formatAddress, timeAgo } from '@/lib/utils'
 import { parseString } from '@/lib/utils/atst'
 import { Stack } from '@mui/material'
@@ -39,10 +39,14 @@ function a11yProps(index: number) {
   }
 }
 
-export default function AttestationTabs() {
+export default function AttestationTabs({
+  recievedAts,
+  givenAts,
+}: {
+  recievedAts: AttestationsQuery | undefined
+  givenAts: AttestationsQuery | undefined
+}) {
   const [value, setValue] = React.useState(0)
-  const { data: myAts } = useMyAttestations()
-  const { data: givenAts } = useGivenAttestations()
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue)
@@ -66,7 +70,7 @@ export default function AttestationTabs() {
       </Box>
       <TabPanel value={value} index={0}>
         <Stack spacing={2}>
-          {myAts?.attestations.map((atst) => (
+          {recievedAts?.attestations.map((atst) => (
             <Card key={atst.id} sx={{ minWidth: 275 }}>
               <CardContent>
                 <Typography variant="h4">{parseString(atst.val as any)}</Typography>
