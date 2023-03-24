@@ -1,6 +1,7 @@
 import AttendeesModal from '@/components/attendees-modal'
 import Layout from '@/components/layout/layout'
 import { useEventDetail, useTicket } from '@/lib/hooks/use-polybase'
+import { useStore } from '@/lib/store'
 import { formatAddress } from '@/lib/utils'
 import formatDate from '@/lib/utils/date'
 import { AccessTime, LocationCity, People } from '@mui/icons-material'
@@ -46,6 +47,7 @@ export default function Home() {
   const { id } = router.query
   const { data } = useEventDetail(id)
   const { buyTicket } = useTicket()
+  const decryptKey = useStore((state) => state.decryptKey)
 
   return (
     <Layout>
@@ -99,6 +101,13 @@ export default function Home() {
                 variant="contained"
                 className=""
                 onClick={async () => {
+                  if (!decryptKey) {
+                    toast.error(
+                      'Make sure to have generated a encryption keypair first in the profile page.',
+                    )
+                    return
+                  }
+
                   const res = await buyTicket({
                     type: 'general',
                     encryptedData: 'test data',
