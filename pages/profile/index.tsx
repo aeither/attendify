@@ -50,8 +50,8 @@ export default function Profile() {
               alignItems="center"
               spacing={1}
             >
-              <Edit sx={{ width: 16, height: 16 }} />
-              <Typography>Edit Profile</Typography>
+              <Edit sx={{ width: 16, height: 16, cursor: 'pointer' }} />
+              <Typography className='cursor-pointer'>Edit Profile</Typography>
             </Stack>
             {editMode && (
               <FormContainer

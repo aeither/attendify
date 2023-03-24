@@ -1,7 +1,7 @@
 import { AttestationsQuery } from '@/lib/graphql/generated'
 import { formatAddress, timeAgo } from '@/lib/utils'
 import { parseString } from '@/lib/utils/atst'
-import { Stack } from '@mui/material'
+import { Link, Stack } from '@mui/material'
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
@@ -9,6 +9,7 @@ import Tab from '@mui/material/Tab'
 import Tabs from '@mui/material/Tabs'
 import Typography from '@mui/material/Typography'
 import * as React from 'react'
+import OpenInNew from '@mui/icons-material/OpenInNew'
 
 interface TabPanelProps {
   children?: React.ReactNode
@@ -73,7 +74,16 @@ export default function AttestationTabs({
           {recievedAts?.attestations.map((atst) => (
             <Card key={atst.id} sx={{ minWidth: 275 }}>
               <CardContent>
-                <Typography variant="h4">{parseString(atst.val as any)}</Typography>
+                <div className="flex w-full justify-between pt-1">
+                  <Typography variant="h4">{parseString(atst.val as any)}</Typography>
+                  <Link
+                    href={`https://optimistic.etherscan.io/tx/${atst.transactionHash}`}
+                  >
+                    <Box color={'text.secondary'}>
+                      <OpenInNew />
+                    </Box>
+                  </Link>
+                </div>
                 <div className="flex w-full justify-between pt-1">
                   <Typography variant="body1" color={'text.secondary'}>
                     From {formatAddress(atst.creator)}
@@ -92,7 +102,16 @@ export default function AttestationTabs({
           {givenAts?.attestations.map((atst) => (
             <Card key={atst.id} sx={{ minWidth: 275 }}>
               <CardContent>
-                <Typography variant="h4">{parseString(atst.val as any)}</Typography>
+                <div className="flex w-full justify-between pt-1">
+                  <Typography variant="h4">{parseString(atst.val as any)}</Typography>
+                  <Link
+                    href={`https://optimistic.etherscan.io/tx/${atst.transactionHash}`}
+                  >
+                    <Box color={'text.secondary'}>
+                      <OpenInNew />
+                    </Box>
+                  </Link>
+                </div>
                 <div className="flex w-full justify-between pt-1">
                   <Typography variant="body1" color={'text.secondary'}>
                     To {formatAddress(atst.about)}
