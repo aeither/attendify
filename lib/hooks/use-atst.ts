@@ -24,7 +24,7 @@ export function useReceivedAttestations(address: string | string[] | null | unde
     useState<ApolloQueryResult<AttestationsQuery>>()
 
   const queryMyAtsts = async () => {
-    if (!address) {
+    if (typeof address !== 'string') {
       return
     }
 
