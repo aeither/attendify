@@ -1,3 +1,4 @@
+import AttendeesModal from '@/components/attendees-modal'
 import Layout from '@/components/layout/layout'
 import { useEventDetail, useTicket } from '@/lib/hooks/use-polybase'
 import { formatAddress } from '@/lib/utils'
@@ -82,12 +83,7 @@ export default function Home() {
             <LocationCity />
             <Typography variant="subtitle1">{data.data.location}</Typography>
           </div>
-          <div className="flex gap-2 text-neutral-300">
-            <People />
-            <Typography variant="subtitle1">
-              {data.data.participants.length} Attendee(s)
-            </Typography>
-          </div>
+          <AttendeesModal participants={data.data.participants} />
 
           <div className="flex flex-col gap-2 pb-16">
             <Typography variant="h3">About</Typography>

@@ -21,6 +21,16 @@ export default function Profile() {
   const { data: recievedAts } = useReceivedAttestations(address)
   const { data: givenAts } = useGivenAttestations(address)
 
+  if (!address) {
+    return (
+      <Layout>
+        <div className="flex h-[50vh] w-full items-center justify-center text-center">
+          <Typography variant="h2">Log in to see the content on this page.</Typography>
+        </div>
+      </Layout>
+    )
+  }
+
   return (
     <Layout>
       {address && name && (
