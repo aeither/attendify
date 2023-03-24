@@ -42,33 +42,6 @@ export async function getPublicKey() {
 }
 
 /**
- * Encrypt data
- */
-
-// export function useEncrypt() {
-//   const polybase = usePolybase()
-//   const privateKey = useStore((state) => state.privateKey)
-
-//   const encrypt = async (publicKey: string, data: string) => {
-//     return await asymEncrypt(getUint8Array(publicKey), data)
-//   }
-
-//   const decrypt = async (data: EncryptedDataSecp256k1) => {
-//     if (!privateKey) {
-//       const { publicKey, privateKey } = await genKeys()
-//       //
-//       return await asymDecrypt(privateKey, data)
-//     }
-//     return await asymDecrypt(getUint8Array(privateKey), data)
-//   }
-
-//   return {
-//     encrypt,
-//     decrypt,
-//   }
-// }
-
-/**
  * useTicket
  */
 
@@ -81,8 +54,11 @@ export function useTicket() {
     localPubKey ? polybase.collection('Ticket').where('userId', '==', localPubKey) : null,
   )
 
-  const buyTicket = async (props: Omit<TicketData, 'id' | 'userId'>) => {
-    const { type, price, quantity, eventTitle, eventId, image } = props
+  const buyTicket = async (
+    props: Omit<TicketData, 'id' | 'userId'> & { eventEncryptPubKey: string },
+  ) => {
+    const { type, price, quantity, eventTitle, eventId, image, eventEncryptPubKey } =
+      props
     const id = nanoid(16)
 
     const publicKey = localPubKey || (await getPublicKey())
@@ -107,7 +83,7 @@ export function useTicket() {
     }
 
     const encryptedData = await asymEncrypt(
-      decodeFromString(accountInfo.data.data.encryptPubKey, 'hex'),
+      decodeFromString(eventEncryptPubKey, 'hex'),
       JSON.stringify(dataToBeEncrypted),
     )
 

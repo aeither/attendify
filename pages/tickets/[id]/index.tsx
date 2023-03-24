@@ -45,7 +45,7 @@ function stringAvatar(name: string) {
 export default function Home() {
   const router = useRouter()
   const { id } = router.query
-  const { data } = useEventDetail(id)
+  const { data: eventData } = useEventDetail(id)
   const { buyTicket } = useTicket()
   const decryptKey = useStore((state) => state.decryptKey)
 
@@ -54,43 +54,43 @@ export default function Home() {
       <IconButton onClick={() => router.back()}>
         <ArrowBack />
       </IconButton>
-      {data && (
+      {eventData && (
         <div className="flex w-full flex-col gap-4">
           <div className="relative h-56 w-full">
             <Image
-              src={data.data.image}
-              alt={data.data.title}
+              src={eventData.data.image}
+              alt={eventData.data.title}
               fill
               className="rounded-lg object-cover"
             />
           </div>
           <Chip label="Free" />
-          <Typography variant="h2">{data.data.title}</Typography>
+          <Typography variant="h2">{eventData.data.title}</Typography>
           <div className="flex w-full items-center py-2">
-            <Avatar {...stringAvatar(data.data.owner)} />
+            <Avatar {...stringAvatar(eventData.data.owner)} />
             <div className="flex flex-col pl-4">
               <Typography variant="subtitle2" color={'text.secondary'}>
                 Created by
               </Typography>{' '}
               <Typography variant="body1" className="font-bold">
-                {formatAddress(data.data.owner)}
+                {formatAddress(eventData.data.owner)}
               </Typography>
             </div>
           </div>
           <div className="flex gap-2 text-neutral-300">
             <AccessTime />
-            <Typography variant="subtitle1">{formatDate(data.data.date)}</Typography>
+            <Typography variant="subtitle1">{formatDate(eventData.data.date)}</Typography>
           </div>
           <div className="flex gap-2 text-neutral-300">
             <LocationCity />
-            <Typography variant="subtitle1">{data.data.location}</Typography>
+            <Typography variant="subtitle1">{eventData.data.location}</Typography>
           </div>
-          <AttendeesModal participants={data.data.participants} />
+          <AttendeesModal participants={eventData.data.participants} />
 
           <div className="flex flex-col gap-2 pb-16">
             <Typography variant="h3">About</Typography>
             <Typography variant="body1" className="text-neutral-300">
-              {data.data.description}
+              {eventData.data.description}
             </Typography>
           </div>
 
@@ -113,9 +113,10 @@ export default function Home() {
                     encryptedData: 'test data',
                     quantity: 1,
                     price: 0,
-                    eventTitle: data.data.title,
-                    eventId: data.data.id,
-                    image: data.data.image,
+                    eventTitle: eventData.data.title,
+                    eventId: eventData.data.id,
+                    eventEncryptPubKey: eventData.data.encryptPubKey,
+                    image: eventData.data.image,
                   })
                   if (res) {
                     toast.success('Ticked purchased successfully!')
