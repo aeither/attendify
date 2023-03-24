@@ -18,7 +18,10 @@ export default function EventCard({ event }: Props) {
   return (
     <>
       <Link className="no-underline" href={`/tickets/${id}`} passHref>
-        <Card sx={{ display: 'flex' }}>
+        <Card
+          sx={{ display: 'flex' }}
+          className="duration-150 hover:ring-2 hover:ring-green-400 hover:ring-offset-2 hover:ring-offset-slate-900"
+        >
           <CardMedia
             component="img"
             sx={{ width: 125 }}
