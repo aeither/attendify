@@ -92,7 +92,7 @@ export default function Home() {
             </Typography>
           </div>
 
-          <div className="fixed bottom-16 left-0 right-0 w-full">
+          <div className="fixed bottom-20 left-0 right-0 w-full">
             <div className="px-4">
               <Button
                 fullWidth
