@@ -76,6 +76,8 @@ collection Event {
   function joinEvent (participant: string) {
     this.participants.push(participant);
   }
+
+  @index([date, desc]);
 }
 
 @public

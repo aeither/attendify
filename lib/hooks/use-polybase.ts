@@ -142,7 +142,9 @@ export function useEvent() {
   const polybase = usePolybase()
   const localPubKey = useStore((state) => state.publicKey)
 
-  const events = useCollection<EventData>(polybase.collection('Event'))
+  const events = useCollection<EventData>(
+    polybase.collection('Event').sort('date', 'desc'),
+  )
 
   const organizerEvents = useCollection<EventData>(
     localPubKey ? polybase.collection('Event').where('owner', '==', localPubKey) : null,

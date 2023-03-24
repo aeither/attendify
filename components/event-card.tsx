@@ -26,14 +26,28 @@ export default function EventCard({ event }: Props) {
             alt={title}
           />
           <CardContent className="flex w-full flex-col justify-between ">
-            <div>
+            <div className="max-w-[232px] sm:max-w-md">
               <Typography variant="subtitle1" color="primary">
                 {formatDate(date)}
               </Typography>
-              <Typography component="div" variant="h3" className="font-bold">
+              <Typography
+                noWrap
+                overflow="hidden"
+                style={{ textOverflow: 'ellipsis' }}
+                component="div"
+                variant="h3"
+                className="font-bold"
+              >
                 {title}
               </Typography>
-              <Typography variant="body1" color="text.secondary" component="div">
+              <Typography
+                noWrap
+                overflow="hidden"
+                style={{ textOverflow: 'ellipsis' }}
+                variant="body1"
+                color="text.secondary"
+                component="div"
+              >
                 {location}
               </Typography>
             </div>
