@@ -87,7 +87,10 @@ export function useTicket() {
       JSON.stringify(dataToBeEncrypted),
     )
 
-    await polybase.collection('Event').record(eventId).call('joinEvent', [publicKey])
+    await polybase
+      .collection('Event')
+      .record(eventId)
+      .call('joinEvent', [getAddressFromPublicKey(publicKey)])
     const res = await polybase
       .collection('Ticket')
       .create([
@@ -135,19 +138,17 @@ export function useEvent() {
       throw new Error('PublicKey undefined. Sign in.')
     }
 
-    const res = await polybase
-      .collection('Event')
-      .create([
-        id,
-        title,
-        description,
-        image,
-        date,
-        location,
-        encryptPubKey,
-        publicKey,
-        publicKey,
-      ])
+    const res = await polybase.collection('Event').create([
+      id,
+      title,
+      description,
+      image,
+      date,
+      location,
+      encryptPubKey,
+      getAddressFromPublicKey(publicKey), // owner address
+      getAddressFromPublicKey(publicKey), // participant address
+    ])
     return res
   }
 
