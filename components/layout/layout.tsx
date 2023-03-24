@@ -43,7 +43,7 @@ export default function Layout({ children }: Props) {
         {children}
       </div>
       <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
-        <BottomNavigation showLabels>
+        <BottomNavigation showLabels sx={{ mb: 1 }}>
           <BottomNavigationAction
             component={NextLinkComposed}
             to={{ pathname: '/' }}
