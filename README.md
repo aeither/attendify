@@ -1,5 +1,7 @@
 ## Attendify
 
+The Gateway to Trusted Event Communities.
+
 ![hero](https://user-images.githubusercontent.com/36173828/227645598-23ecdd38-b7c4-4854-be92-3acc932c9862.png)
 
 
